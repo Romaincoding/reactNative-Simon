@@ -7,24 +7,21 @@ const initialState = {
 //  Profil datas [{Object}]
 
 //  @param      {String}  {pseudo}
-
+    adresse: "Paname",
+    // state.profil
  	profil: [ {
 
- 		pseudo: 'Romain'
- 	} ,
- 	{
+ 		pseudo: 'romain',
+ 		age: '35ans'
 
-     		pseudo: 'Teddy'
-     	} ,
-     	{
+ 	}, {
+ 	pseudo: 'cristobal',
+     		age: '37ans'
 
-         		pseudo: 'Boris'
-         	},
-         	{
+ 	}]
 
-             		pseudo: 'Hugo'
-             	}]
-};
+ 	}
+
 
 export default function reducer(state = initialState, action) {
 	switch (action.type) {

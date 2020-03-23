@@ -10,17 +10,26 @@ class About extends React.Component {
 
 
 	render() {
+	console.log("coco" + this.props.pseudo)
+
+
 		return (
 			<SafeAreaView style={styles.about}>
-				<Text>{this.profil.pseudo}</Text>
+				<Text>{this.props}</Text>
+
+
+
+
+
 			</SafeAreaView>
 		);
 	}
 }
-
+// je récupère un state que je récupère via redux en props de mon composant
 const mapStateToProps = state => {
 	return {
 		profil: state.profil
+
 	};
 }
 const mapDispatchToProps = dispatch => {
