@@ -1,7 +1,8 @@
 import React from 'react';
-import { Text } from 'react-native';
+import { Text, FlatList } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { connect } from 'react-redux'
+
 
 
 import styles from '../assets/styles';
@@ -15,7 +16,9 @@ class About extends React.Component {
 
 		return (
 			<SafeAreaView style={styles.about}>
-				<Text>{this.props}</Text>
+
+				<Text>{this.props.profil.map(y => y.pseudo)}</Text>
+
 
 
 
@@ -28,7 +31,8 @@ class About extends React.Component {
 // je récupère un state que je récupère via redux en props de mon composant
 const mapStateToProps = state => {
 	return {
-		profil: state.profil
+		profil: state.profil,
+		adresse: state.adresse
 
 	};
 }

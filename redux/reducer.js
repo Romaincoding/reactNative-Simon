@@ -11,14 +11,24 @@ const initialState = {
     // state.profil
  	profil: [ {
 
- 		pseudo: 'romain',
+ 		pseudo: 'Romain ',
  		age: '35ans'
 
  	}, {
- 	pseudo: 'cristobal',
+ 	pseudo: 'Boris ',
      		age: '37ans'
 
- 	}]
+ 	},
+ 	{
+     	pseudo: 'Hugo ',
+         		age: '37ans'
+
+     	},
+     	{
+         	pseudo: 'Teddy ',
+             		age: '37ans'
+
+         	}]
 
  	}
 

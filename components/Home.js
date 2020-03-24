@@ -10,9 +10,9 @@ class Home extends React.Component {
 
 
 	render() {
-	console.log("coco" + this.props.profil[0].pseudo)
-	console.log("coco" + this.props.monAdresse)
-	this.props.profil.map(x => console.log(x.pseudo,x.age))
+	//console.log("coco" + this.props.profil[0].pseudo)
+	//console.log("coco" + this.props.monAdresse)
+//	this.props.profil.map(x => console.log(x.pseudo,x.age))
 
 		const { profil } = this.props;
 		return (
@@ -27,7 +27,7 @@ const mapStateToProps = state => {
 	return {
 	    //à gauche je nomme comme je veux c'est mon props! A droite c'est ce que je stocke dans mon state global
 		profil: state.profil,
-		monAdresse : state.adresse
+
 
 	};
 }
