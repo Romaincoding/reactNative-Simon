@@ -7,7 +7,27 @@ const initialState = {
 //  Profil datas [{Object}]
 
 //  @param      {String}  {pseudo}
-    adresse: "Paname",
+    score: [ {
+
+        joueur:"Michel ",
+        scores: "3 "
+
+    },
+    {
+            joueur:"Romain ",
+            scores:"5 "
+
+        },
+        {
+                 joueur:"Hugo ",
+                scores: "7 "
+
+            },
+            {
+                 joueur:"Bertand ",
+                    scores: "8 "
+
+                }],
     // state.profil
  	profil: [ {
 
