@@ -1,72 +1,74 @@
 import React from 'react';
-import { Text, FlatList, View, StyleSheet, Button, Alert } from 'react-native';
+import { Text, FlatList, View, StyleSheet, Button, Alert, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { connect } from 'react-redux'
 import {Dimensions} from 'react-native';
 
+const windowWidth = Dimensions.get('screen').width;
+const windowHeight = Dimensions.get('screen').height;
+const couleurTab = ["jaune", "bleu", "rouge", "vert"]
 
-
-    const windowWidth = Dimensions.get('screen').width;
-    const windowHeight = Dimensions.get('screen').height;
-    const couleurTab = ["jaune", "bleu", "rouge", "vert"]
 export default class Game extends React.Component {
-
+   constructor(props) {
+      super(props);
+      this.state = { opacity: 0 }
+   }
 
  selectionCouleur = () =>{
- var couleur = couleurTab[Math.floor(Math.random() * 4)]
+     var couleur = couleurTab[Math.floor(Math.random() * 4)]
 
- switch (couleur){
+     switch (couleur){
 
- case "jaune":
-    return jaune.style.height = 150;
+         case "jaune":
+            return jaune.style.height = 150;
 
-  console.log("la couleur 5 est " + couleur);
-// return <View style={{width: 150, height: 150, backgroundColor: 'gold'}} />;
+          console.log("la couleur 5 est " + couleur);
 
+         case "bleu":
+         console.log("la couleur est " + couleur);
+            return bleu.style.height = 150;
 
+         case "rouge":
+            return rouge.style.height = 150;
 
- case "bleu":
- console.log("la couleur est " + couleur);
-    return bleu.style.height = 150;
+         case "vert":
+            return  vert.style.height = 150;
 
- //return <View style={{width: 150, height: 150, backgroundColor: 'aqua'}} />;
+          console.log("la couleur 4 est " + couleur);
 
-
- case "rouge":
-    return rouge.style.height = 150;
-
-// return <View style={{width: 150, height: 150, backgroundColor: 'crimson'}} />;
-
-
- case "vert":
-    return  vert.style.height = 150;
-
-  console.log("la couleur 4 est " + couleur);
- //return <View style={{width: 150, height: 150, backgroundColor: 'chartreuse'}} />;
-
- };
+      };
 
  }
- render(){
-     return (
 
-       // Try setting flexDirection to column.
+ render(){
+
+     return (
+       // TouchableOpacity car une view est incompatible avec un onPress
        <View style={styles.ContainerTuiles}>
 
            <View style={styles.RangeeTuiles}>
-             <View style={styles.TuileBleu} />
-             <View style={styles.TuileVert} />
+                 <Text style={styles.textPartie}>Séquences retenues : 1</Text>
+            </View>
+
+           <View style={styles.RangeeTuiles}>
+             <TouchableOpacity style={styles.TuileBleu} activeOpacity={0.6}/>
+             <TouchableOpacity style={styles.TuileVert} activeOpacity={0.6}/>
            </View>
 
            <View style={styles.RangeeTuiles}>
-             <View style={styles.TuileRouge} />
-             <View style={styles.TuileJaune} />
+             <TouchableOpacity style={styles.TuileRouge} activeOpacity={0.6}/>
+             <TouchableOpacity style={styles.TuileJaune} activeOpacity={0.6}/>
            </View>
 
-         <Button title="Jouer"/>
+           <View style={styles.RangeeTuiles}>
+             <TouchableOpacity activeOpacity={0.6} style={styles.BoutonJouer}>
+                 <Text style={styles.textBouton}>Jouer</Text>
+             </TouchableOpacity>
+            </View>
 
        </View>
      );
+
    }
 
  }
@@ -74,9 +76,9 @@ export default class Game extends React.Component {
    const styles = StyleSheet.create({
          ContainerTuiles : {
              width: windowWidth/1.5,
-             height: windowHeight/3,
+             height: windowHeight/2,
              marginLeft: windowWidth/6,
-             marginTop: 100
+             marginTop: 100,
          },
          RangeeTuiles : {
                  flex: 1,
@@ -86,7 +88,8 @@ export default class Game extends React.Component {
          TuileBleu : {
                  width: 100,
                  height: 100,
-                 backgroundColor: '#01579b'
+                 backgroundColor: "#01579b",
+                 //opacity: 0.7
              },
          TuileVert : {
                    width: 100,
@@ -102,7 +105,25 @@ export default class Game extends React.Component {
                    width: 100,
                    height: 100,
                    backgroundColor: '#fbc02d'
-               }
+               },
+         BoutonJouer : {
+                    width: 100,
+                    backgroundColor: '#424242',
+                            flexDirection: 'row',
+                            height: 50,
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            marginTop: 70
+                },
+        textBouton: {
+            fontSize: 16,
+            fontWeight: 'bold',
+            color: 'white'
+        },
+        textPartie: {
+            fontSize: 16,
+            fontWeight: 'bold',
+        }
  });
 
 
