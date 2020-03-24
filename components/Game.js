@@ -94,17 +94,19 @@ export default class Game extends React.Component {
          TuileVert : {
                    width: 100,
                    height: 100,
-                   backgroundColor: '#1b5e20'
+                   backgroundColor: '#1b5e20',
                },
          TuileRouge : {
                  width: 100,
                  height: 100,
-                 backgroundColor: '#bf360c'
+                 backgroundColor: '#bf360c',
+                 marginTop: 25
              },
          TuileJaune : {
                    width: 100,
                    height: 100,
-                   backgroundColor: '#fbc02d'
+                   backgroundColor: '#fbc02d',
+                   marginTop: 25
                },
          BoutonJouer : {
                     width: 100,
