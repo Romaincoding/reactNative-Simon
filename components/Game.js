@@ -8,9 +8,9 @@ import {Dimensions} from 'react-native';
 const windowWidth = Dimensions.get('screen').width;
 const windowHeight = Dimensions.get('screen').height;
 //tableau de couleur ou l'Ia va piocher une couleur au hasard
-const couleurTab = ["jaune", "bleu", "rouge", "vert"]
-const sequenceIa = []
-couleurTab.push("violet")
+var couleurTab = ["Jaune", "Bleu", "Rouge", "Vert"]
+var sequenceIa = []
+couleurTab.push("Violet")
 console.log(couleurTab);
 console.log(sequenceIa);
 
@@ -101,41 +101,41 @@ export default class Game extends React.Component {
 
      switch (couleur){
 
-         case "jaune":
+         case "Jaune":
 
         this.setState({...this.state, Simon: {...this.state.Simon, jaune: {...this.state.Simon.jaune, style: 'TuileJauneLight'}}});
         this.sound.clickJaune.replayAsync();
-        sequenceIa.push("jaune");
+        sequenceIa.push("Jaune");
           console.log(sequenceIa);
 
 
 
         break;
 
-         case "bleu":
+         case "Bleu":
 
       this.setState({...this.state, Simon: {...this.state.Simon, bleu: {...this.state.Simon.bleu, style: 'TuileBleuLight'}}});
       this.sound.clickBleu.replayAsync();
-        sequenceIa.push("bleu");
+        sequenceIa.push("Bleu");
           console.log(sequenceIa);
 
 
       break;
-         case "rouge":
+         case "Rouge":
 
       this.setState({...this.state, Simon: {...this.state.Simon, rouge: {...this.state.Simon.rouge, style: 'TuileRougeLight'}}});
       this.sound.clickRouge.replayAsync();
-        sequenceIa.push("rouge");
+        sequenceIa.push("Rouge");
           console.log(sequenceIa);
 
 
       break;
 
-         case "vert":
+         case "Vert":
 
                 this.sound.clickVert.replayAsync();
        this.setState( {...this.state, Simon: {...this.state.Simon, vert: {...this.state.Simon.vert, style: 'TuileVertLight'}}});
-         sequenceIa.push("vert");
+         sequenceIa.push("Vert");
            console.log(sequenceIa);
          break;
 
@@ -144,8 +144,12 @@ export default class Game extends React.Component {
       };
 
  }
-  _onPress(noteAJouer) {
-    noteAJouer.replayAsync();
+
+  playSound(couleur) {
+    sequenceIa.push(couleur)
+    this.sound['note' + couleur].replayAsync();
+    console.log(sequenceIa);
+    //noteAJouer.replayAsync();
   };
 
  render(){
@@ -160,13 +164,13 @@ export default class Game extends React.Component {
 
            <View style={styles.RangeeTuiles}>
 
-             <TouchableOpacity style={styles[this.state.Simon.bleu.style]} activeOpacity={0.6} onPress= {() =>this._onPress(this.sound.clickBleu)}/>
-             <TouchableOpacity  style={styles[this.state.Simon.vert.style]} activeOpacity={0.6} onPress= {() =>this._onPress(this.sound.clickVert)}/>
+             <TouchableOpacity style={styles[this.state.Simon.bleu.style]} activeOpacity={0.6} onPress= {() =>this.playSound(Bleu)}/>
+             <TouchableOpacity  style={styles[this.state.Simon.vert.style]} activeOpacity={0.6} onPress= {() =>this.playSound(Vert)}/>
            </View>
 
            <View style={styles.RangeeTuiles}>
-             <TouchableOpacity style={styles[this.state.Simon.rouge.style]} activeOpacity={0.6} onPress= {() =>this._onPress(this.sound.clickRouge)}/>
-             <TouchableOpacity style={styles[this.state.Simon.jaune.style]} activeOpacity={0.6} onPress= {() =>this._onPress(this.sound.clickJaune)}/>
+             <TouchableOpacity style={styles[this.state.Simon.rouge.style]} activeOpacity={0.6} onPress= {() =>this.playSound(Rouge)}/>
+             <TouchableOpacity style={styles[this.state.Simon.jaune.style]} activeOpacity={0.6} onPress= {() =>this.playSound(Jaune)}/>
 
            </View>
 
@@ -178,7 +182,7 @@ export default class Game extends React.Component {
             </View>
 
 
-            <TouchableOpacity  >
+            <TouchableOpacity>
                 <View>
                     <Text>Start</Text>
                 </View>
@@ -266,11 +270,11 @@ export default class Game extends React.Component {
          BoutonJouer : {
                     width: 100,
                     backgroundColor: '#424242',
-                            flexDirection: 'row',
-                            height: 50,
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            marginTop: 70
+                    flexDirection: 'row',
+                    height: 50,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    marginTop: 70
                 },
         textBouton: {
             fontSize: 16,
