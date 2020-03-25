@@ -39,45 +39,58 @@ export default class Game extends React.Component {
 
    }
 
-
+//fonction permettant de charger la musique dès le chargement de la page afin qu'elle soit prête à jouer.
  async componentDidMount (){
       this.sound = {};
+
+
       this.sound.clickBleu = new Audio.Sound();
       try {
-              await this.sound.clickBleu.loadAsync( require ('../assets/sound/NoteBleue.wav') );
-            } catch (error) {
-              console.log('errorSound', error);
-            }
+        await this.sound.clickBleu.loadAsync( require ('../assets/sound/NoteBleue.wav') );
+        //charge la note associée à la couleur bleue si elle existe
+      } catch (error) {
+        console.log('errorSound', error);
+      }
       this.sound.clickJaune = new Audio.Sound();
       try {
+        await this.sound.clickJaune.loadAsync( require ('../assets/sound/NoteJaune.wav') );
+        //charge la note associée à la couleur jaune si elle existe
+      } catch (error) {
+        console.log('errorSound', error);
+      }
 
-              await this.sound.clickJaune.loadAsync( require ('../assets/sound/NoteJaune.wav') );
-            } catch (error) {
-              console.log('errorSound', error);
-            }
       this.sound.clickRouge = new Audio.Sound();
       try {
+        await this.sound.clickRouge.loadAsync( require ('../assets/sound/NoteRouge.wav') );
+        //charge la note associée à la couleur rouge si elle existe
+      } catch (error) {
+        console.log('errorSound', error);
+      }
 
-              await this.sound.clickRouge.loadAsync( require ('../assets/sound/NoteRouge.wav') );
-
-            } catch (error) {
-              console.log('errorSound', error);
-            }
       this.sound.clickVert = new Audio.Sound();
       try {
+        await this.sound.clickVert.loadAsync( require ('../assets/sound/NoteVerte.wav') );
+        //charge la note associée à la couleur verte si elle existe
+      } catch (error) {
+        console.log('errorSound', error);
+      }
 
-              await this.sound.clickVert.loadAsync( require ('../assets/sound/NoteVerte.wav') );
-
-            } catch (error) {
-              console.log('errorSound', error);
-            }
       this.sound.clickJouer = new Audio.Sound();
       try {
+        await this.sound.clickJouer.loadAsync( require ('../assets/sound/Debut_de_game.wav') );
+        //charge le son associé au lancement d'une nouvelle séquence s'il existe
+      } catch (error) {
+        console.log('errorSound', error);
+      }
 
-              await this.sound.clickJouer.loadAsync( require ('../assets/sound/Debut_de_game.wav') );
-            } catch (error) {
-              console.log('errorSound', error);
-            }
+      this.sound.clickTonTour = new Audio.Sound();
+      try {
+        await this.sound.clickJouer.loadAsync( require ('../assets/sound/A_toi_de_jouer.wav') );
+        //charge le son associé au signal du tour du joueur s'il existe
+      } catch (error) {
+        console.log('errorSound', error);
+      }
+
 
   };
 
@@ -122,6 +135,8 @@ export default class Game extends React.Component {
       };
 
  }
+
+ //fonction permettant de jouer la note associée à la couleur sur laquelle on appuie
   _onPress(noteAJouer) {
     noteAJouer.replayAsync();
   };
@@ -154,13 +169,6 @@ export default class Game extends React.Component {
                  <Text style={styles.textBouton}>Jouer</Text>
              </TouchableOpacity>
             </View>
-
-
-            <TouchableOpacity  >
-                <View>
-                    <Text>Start</Text>
-                </View>
-            </TouchableOpacity>
 
        </View>
      );
