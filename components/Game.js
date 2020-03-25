@@ -121,13 +121,14 @@ export default class Game extends React.Component {
            </View>
 
            <View style={styles.RangeeTuiles}>
-             <TouchableOpacity activeOpacity={0.6} style={styles.BoutonJouer} onPress= {() =>this._onPress(this.sound.clickJouer)}>
+             <TouchableOpacity activeOpacity={0.6} style={styles.BoutonJouer} onPress= {() =>this._onPress(this.sound.clickJouer);}>
+
                  <Text style={styles.textBouton}>Jouer</Text>
              </TouchableOpacity>
             </View>
 
 
-            <TouchableOpacity onPress= {() =>this.selectionCouleur()}>
+            <TouchableOpacity onPress= }>
                 <View>
                     <Text>Start</Text>
                 </View>
