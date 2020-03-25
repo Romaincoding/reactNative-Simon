@@ -43,19 +43,42 @@ export default class Game extends React.Component {
  async componentDidMount (){
       this.sound = {};
       this.sound.clickBleu = new Audio.Sound();
+      try {
+              await this.sound.clickBleu.loadAsync( require ('../assets/sound/NoteBleue.wav') );
+            } catch (error) {
+              console.log('errorSound', error);
+            }
       this.sound.clickJaune = new Audio.Sound();
+      try {
+
+              await this.sound.clickJaune.loadAsync( require ('../assets/sound/NoteJaune.wav') );
+            } catch (error) {
+              console.log('errorSound', error);
+            }
       this.sound.clickRouge = new Audio.Sound();
+      try {
+
+              await this.sound.clickRouge.loadAsync( require ('../assets/sound/NoteRouge.wav') );
+
+            } catch (error) {
+              console.log('errorSound', error);
+            }
       this.sound.clickVert = new Audio.Sound();
+      try {
+
+              await this.sound.clickVert.loadAsync( require ('../assets/sound/NoteVerte.wav') );
+
+            } catch (error) {
+              console.log('errorSound', error);
+            }
       this.sound.clickJouer = new Audio.Sound();
       try {
-        await this.sound.clickBleu.loadAsync( require ('../assets/sound/NoteBleue.wav') );
-        await this.sound.clickJaune.loadAsync( require ('../assets/sound/NoteJaune.wav') );
-        await this.sound.clickRouge.loadAsync( require ('../assets/sound/NoteRouge.wav') );
-        await this.sound.clickVert.loadAsync( require ('../assets/sound/NoteVerte.wav') );
-        await this.sound.clickJouer.loadAsync( require ('../assets/sound/Debut_de_game.wav') );
-      } catch (error) {
-        console.log('errorSound', error);
-      }
+
+              await this.sound.clickJouer.loadAsync( require ('../assets/sound/Debut_de_game.wav') );
+            } catch (error) {
+              console.log('errorSound', error);
+            }
+
   };
 
  selectionCouleur = () =>{
@@ -67,7 +90,8 @@ export default class Game extends React.Component {
          case "jaune":
 
         this.setState({...this.state, Simon: {...this.state.Simon, jaune: {...this.state.Simon.jaune, style: 'TuileJauneLight'}}});
-        this.sound.clickJaune.playAsync;
+        this.sound.clickJaune.replayAsync();
+
         break;
 
 
@@ -77,18 +101,18 @@ export default class Game extends React.Component {
          case "bleu":
 
       this.setState({...this.state, Simon: {...this.state.Simon, bleu: {...this.state.Simon.bleu, style: 'TuileBleuLight'}}});
-      this.sound.clickBleu.playAsync;
+      this.sound.clickBleu.replayAsync();
       break;
          case "rouge":
           console.log("l'état est " + this.state);
       this.setState({...this.state, Simon: {...this.state.Simon, rouge: {...this.state.Simon.rouge, style: 'TuileRougeLight'}}});
-      this.sound.clickRouge.playAsync;
+      this.sound.clickRouge.replayAsync();
         console.log("le nouvel état  est " + this.state);
       break;
 
          case "vert":
           console.log("l'état est " + this.state);
-                this.sound.clickVert.playAsync;
+                this.sound.clickVert.replayAsync();
        this.setState( {...this.state, Simon: {...this.state.Simon, vert: {...this.state.Simon.vert, style: 'TuileVertLight'}}});
          console.log("le nouvel état  est " + this.state);
          break;//    this.setState({...this.state, Simon.vert.style: opacity: 1});
