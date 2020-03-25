@@ -39,44 +39,7 @@ export default class Game extends React.Component {
 
    }
 
- selectionCouleur = () =>{
- console.log("fonction ok");
-     var couleur = couleurTab[Math.floor(Math.random() * 4)]
 
-     switch (couleur){
-
-         case "jaune":
-          console.log("l'état est " + this.state);
-        this.setState({...this.state, Simon: {...this.state.Simon, jaune: {...this.state.Simon.jaune, style: 'TuileJauneLight'}}});
-         console.log("le nouvel état  est " + this.state);
-        break;
-
-
-
-
-
-         case "bleu":
-         console.log("l'état est " + this.state);
-      this.setState({...this.state, Simon: {...this.state.Simon, bleu: {...this.state.Simon.bleu, style: 'TuileBleuLight'}}});
-        console.log("le nouvel état  est " + this.state);
-      break;
-         case "rouge":
-          console.log("l'état est " + this.state);
-      this.setState({...this.state, Simon: {...this.state.Simon, rouge: {...this.state.Simon.rouge, style: 'TuileRougeLight'}}});
-        console.log("le nouvel état  est " + this.state);
-      break;
-
-         case "vert":
-          console.log("l'état est " + this.state);
-       this.setState( {...this.state, Simon: {...this.state.Simon, vert: {...this.state.Simon.vert, style: 'TuileVertLight'}}});
-         console.log("le nouvel état  est " + this.state);
-         break;//    this.setState({...this.state, Simon.vert.style: opacity: 1});
-
-         // console.log("la couleur 4 est " + couleur);
-
-      };
-
- }
  async componentDidMount (){
       this.sound = {};
       this.sound.clickBleu = new Audio.Sound();
@@ -94,6 +57,47 @@ export default class Game extends React.Component {
         console.log('errorSound', error);
       }
   };
+
+ selectionCouleur = () =>{
+ console.log("fonction ok");
+     var couleur = couleurTab[Math.floor(Math.random() * 4)]
+
+     switch (couleur){
+
+         case "jaune":
+
+        this.setState({...this.state, Simon: {...this.state.Simon, jaune: {...this.state.Simon.jaune, style: 'TuileJauneLight'}}});
+        this.sound.clickJaune.playAsync;
+        break;
+
+
+
+
+
+         case "bleu":
+
+      this.setState({...this.state, Simon: {...this.state.Simon, bleu: {...this.state.Simon.bleu, style: 'TuileBleuLight'}}});
+      this.sound.clickBleu.playAsync;
+      break;
+         case "rouge":
+          console.log("l'état est " + this.state);
+      this.setState({...this.state, Simon: {...this.state.Simon, rouge: {...this.state.Simon.rouge, style: 'TuileRougeLight'}}});
+      this.sound.clickRouge.playAsync;
+        console.log("le nouvel état  est " + this.state);
+      break;
+
+         case "vert":
+          console.log("l'état est " + this.state);
+                this.sound.clickVert.playAsync;
+       this.setState( {...this.state, Simon: {...this.state.Simon, vert: {...this.state.Simon.vert, style: 'TuileVertLight'}}});
+         console.log("le nouvel état  est " + this.state);
+         break;//    this.setState({...this.state, Simon.vert.style: opacity: 1});
+
+         // console.log("la couleur 4 est " + couleur);
+
+      };
+
+ }
   _onPress(noteAJouer) {
     noteAJouer.replayAsync();
   };
@@ -121,14 +125,14 @@ export default class Game extends React.Component {
            </View>
 
            <View style={styles.RangeeTuiles}>
-             <TouchableOpacity activeOpacity={0.6} style={styles.BoutonJouer} onPress= {() =>this._onPress(this.sound.clickJouer);}>
+             <TouchableOpacity activeOpacity={0.6} style={styles.BoutonJouer} onPress= {() =>this.selectionCouleur()}>
 
                  <Text style={styles.textBouton}>Jouer</Text>
              </TouchableOpacity>
             </View>
 
 
-            <TouchableOpacity onPress= }>
+            <TouchableOpacity  >
                 <View>
                     <Text>Start</Text>
                 </View>
