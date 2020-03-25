@@ -7,12 +7,20 @@ import {Dimensions} from 'react-native';
 
 const windowWidth = Dimensions.get('screen').width;
 const windowHeight = Dimensions.get('screen').height;
+//tableau de couleur ou l'Ia va piocher une couleur au hasard
 const couleurTab = ["jaune", "bleu", "rouge", "vert"]
+const sequenceIa = []
+couleurTab.push("violet")
+console.log(couleurTab);
+console.log(sequenceIa);
 
 
 export default class Game extends React.Component {
    constructor(props) {
       super(props);
+
+
+
       this.state = {
 
             Simon : {
@@ -30,7 +38,11 @@ export default class Game extends React.Component {
              style : 'TuileVert'}
           },
 
+
           sequenceIa : [],
+
+
+          sequenceJoueur : []
 
 
 
@@ -39,7 +51,7 @@ export default class Game extends React.Component {
 
    }
 
-
+// fonction qui gère les sons
  async componentDidMount (){
       this.sound = {};
       this.sound.clickBleu = new Audio.Sound();
@@ -80,10 +92,12 @@ export default class Game extends React.Component {
             }
 
   };
-
+// fonction ou l'Ia choisit une couleur aléatoire et la joue et remplit son tableau de séquence Ia
  selectionCouleur = () =>{
- console.log("fonction ok");
+
      var couleur = couleurTab[Math.floor(Math.random() * 4)]
+
+  // console.log(tableauRemplit)
 
      switch (couleur){
 
@@ -91,33 +105,41 @@ export default class Game extends React.Component {
 
         this.setState({...this.state, Simon: {...this.state.Simon, jaune: {...this.state.Simon.jaune, style: 'TuileJauneLight'}}});
         this.sound.clickJaune.replayAsync();
+        sequenceIa.push("jaune");
+          console.log(sequenceIa);
+
+
 
         break;
-
-
-
-
 
          case "bleu":
 
       this.setState({...this.state, Simon: {...this.state.Simon, bleu: {...this.state.Simon.bleu, style: 'TuileBleuLight'}}});
       this.sound.clickBleu.replayAsync();
+        sequenceIa.push("bleu");
+          console.log(sequenceIa);
+
+
       break;
          case "rouge":
-          console.log("l'état est " + this.state);
+
       this.setState({...this.state, Simon: {...this.state.Simon, rouge: {...this.state.Simon.rouge, style: 'TuileRougeLight'}}});
       this.sound.clickRouge.replayAsync();
-        console.log("le nouvel état  est " + this.state);
+        sequenceIa.push("rouge");
+          console.log(sequenceIa);
+
+
       break;
 
          case "vert":
-          console.log("l'état est " + this.state);
+
                 this.sound.clickVert.replayAsync();
        this.setState( {...this.state, Simon: {...this.state.Simon, vert: {...this.state.Simon.vert, style: 'TuileVertLight'}}});
-         console.log("le nouvel état  est " + this.state);
-         break;//    this.setState({...this.state, Simon.vert.style: opacity: 1});
+         sequenceIa.push("vert");
+           console.log(sequenceIa);
+         break;
 
-         // console.log("la couleur 4 est " + couleur);
+        console.log(sequenceIa);
 
       };
 
@@ -154,6 +176,14 @@ export default class Game extends React.Component {
                  <Text style={styles.textBouton}>Jouer</Text>
              </TouchableOpacity>
             </View>
+
+
+            <TouchableOpacity  >
+                <View>
+                    <Text>Start</Text>
+                </View>
+            </TouchableOpacity>
+
        </View>
      );
 
