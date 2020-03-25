@@ -169,7 +169,6 @@ export default class Game extends React.Component {
                  <Text style={styles.textBouton}>Jouer</Text>
              </TouchableOpacity>
             </View>
-
        </View>
      );
 
