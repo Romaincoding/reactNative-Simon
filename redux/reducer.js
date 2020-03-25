@@ -46,7 +46,7 @@ const initialState = {
 
     // state.profil
     profil: {
-    pseudo:''
+    pseudo:'Mon pseudo'
     }
 
  }

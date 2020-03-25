@@ -32,5 +32,10 @@ export default StyleSheet.create({
 		color: '#ffffff',
 		fontSize: 20,
 		textAlign: 'center'
+	},
+	score :{
+		flex :1,
+		alignItems: 'center',
+		justifyContent:'center'
 	}
 });
