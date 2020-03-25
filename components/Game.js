@@ -13,7 +13,18 @@ const couleurTab = ["jaune", "bleu", "rouge", "vert"]
 export default class Game extends React.Component {
    constructor(props) {
       super(props);
-      this.state = { opacity: 0 }
+      this.state = {
+            Simon : {
+             bleu : { style : styles.TuileBleu},
+             rouge : { style :styles.TuileRouge},
+             jaune : { style : styles.TuileJaune},
+             vert : { style : styles.TuileVert}
+          }
+
+
+      }
+
+      { opacity: 1 }
    }
 
  selectionCouleur = () =>{
@@ -65,13 +76,13 @@ export default class Game extends React.Component {
             </View>
 
            <View style={styles.RangeeTuiles}>
-             <TouchableOpacity style={styles.TuileBleu} activeOpacity={0.6}/>
-             <TouchableOpacity style={styles.TuileVert} activeOpacity={0.6}/>
+             <TouchableOpacity style={this.state.Simon.bleu.style} activeOpacity={0.6}/>
+             <TouchableOpacity  style={this.state.Simon.vert.style} activeOpacity={0.6}/>
            </View>
 
            <View style={styles.RangeeTuiles}>
-             <TouchableOpacity style={styles.TuileRouge} activeOpacity={0.6}/>
-             <TouchableOpacity style={styles.TuileJaune} activeOpacity={0.6}/>
+             <TouchableOpacity style={this.state.Simon.rouge.style} activeOpacity={0.6}/>
+             <TouchableOpacity style={this.state.Simon.jaune.style} activeOpacity={0.6}/>
            </View>
 
            <View style={styles.RangeeTuiles}>
@@ -109,7 +120,7 @@ export default class Game extends React.Component {
                  width: 100,
                  height: 100,
                  backgroundColor: "#01579b",
-                 //opacity: 0.7
+                 opacity: 0.7
              },
          TuileVert : {
                    width: 100,
