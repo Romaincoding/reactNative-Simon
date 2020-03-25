@@ -15,28 +15,14 @@ export default class Game extends React.Component {
       super(props);
       this.state = {
 
-            Simon : {
-             bleu : {
-
-             style : 'TuileBleu'},
-             rouge : {
-
-              style :'TuileRouge'},
-             jaune : {
-
-             style : 'TuileJaune'},
-             vert : {
-
-             style : 'TuileVert'}
-          },
-
-          sequenceIa : [],
-
-
-
+        Simon : {
+            bleu : {style : 'TuileBleu'},
+            rouge : {style :'TuileRouge'},
+            jaune : {style : 'TuileJaune'},
+            vert : {style : 'TuileVert'}
+        },
+        sequenceIa : [],
       }
-
-
    }
 
 //fonction permettant de charger la musique dès le chargement de la page afin qu'elle soit prête à jouer.
@@ -101,34 +87,30 @@ export default class Game extends React.Component {
      switch (couleur){
 
          case "jaune":
-
-        this.setState({...this.state, Simon: {...this.state.Simon, jaune: {...this.state.Simon.jaune, style: 'TuileJauneLight'}}});
-        this.sound.clickJaune.replayAsync();
-
-        break;
-
-
-
-
+            this.setState({...this.state, Simon: {...this.state.Simon, jaune: {...this.state.Simon.jaune, style: 'TuileJauneLight'}}});
+            this.sound.clickJaune.replayAsync();
+         break;
 
          case "bleu":
+            this.setState({...this.state, Simon: {...this.state.Simon, bleu: {...this.state.Simon.bleu, style: 'TuileBleuLight'}}});
+            this.sound.clickBleu.replayAsync();
+         break;
 
-      this.setState({...this.state, Simon: {...this.state.Simon, bleu: {...this.state.Simon.bleu, style: 'TuileBleuLight'}}});
-      this.sound.clickBleu.replayAsync();
-      break;
          case "rouge":
-          console.log("l'état est " + this.state);
-      this.setState({...this.state, Simon: {...this.state.Simon, rouge: {...this.state.Simon.rouge, style: 'TuileRougeLight'}}});
-      this.sound.clickRouge.replayAsync();
-        console.log("le nouvel état  est " + this.state);
-      break;
+            console.log("l'état est " + this.state);
+            this.setState({...this.state, Simon: {...this.state.Simon, rouge: {...this.state.Simon.rouge, style: 'TuileRougeLight'}}});
+            this.sound.clickRouge.replayAsync();
+            console.log("le nouvel état  est " + this.state);
+          break;
 
          case "vert":
-          console.log("l'état est " + this.state);
-                this.sound.clickVert.replayAsync();
-       this.setState( {...this.state, Simon: {...this.state.Simon, vert: {...this.state.Simon.vert, style: 'TuileVertLight'}}});
-         console.log("le nouvel état  est " + this.state);
-         break;//    this.setState({...this.state, Simon.vert.style: opacity: 1});
+            console.log("l'état est " + this.state);
+            this.sound.clickVert.replayAsync();
+            this.setState( {...this.state, Simon: {...this.state.Simon, vert: {...this.state.Simon.vert, style: 'TuileVertLight'}}});
+            console.log("le nouvel état  est " + this.state);
+         break;
+
+         //    this.setState({...this.state, Simon.vert.style: opacity: 1});
 
          // console.log("la couleur 4 est " + couleur);
 
@@ -184,84 +166,88 @@ export default class Game extends React.Component {
              marginTop: 100,
          },
          RangeeTuiles : {
-                 flex: 1,
-                 flexDirection: 'row',
-                 justifyContent: 'space-around'
-                         },
+             flex: 1,
+             flexDirection: 'row',
+             justifyContent: 'space-around'
+         },
+
          TuileBleu : {
-                 width: 100,
-                 height: 100,
-                 backgroundColor: "#01579b",
-                 opacity: 1
+             width: 100,
+             height: 100,
+             backgroundColor: "#01579b",
+             opacity: 1
+         },
 
-             },
-              TuileBleuLight : {
-                              width: 100,
-                              height: 100,
-                              backgroundColor: "#01579b",
-                              opacity: 0.5
+         TuileBleuLight : {
+              width: 100,
+              height: 100,
+              backgroundColor: "#01579b",
+              opacity: 0.5
 
-                          },
+         },
+
          TuileVert : {
-                   width: 100,
-                   height: 100,
-                   backgroundColor: '#1b5e20',
-                   opacity: 1
+               width: 100,
+               height: 100,
+               backgroundColor: '#1b5e20',
+               opacity: 1
+         },
 
-               },
-                  TuileVertLight : {
-                                  width: 100,
-                                  height: 100,
-                                  backgroundColor: '#1b5e20',
-                                  opacity: 0.5
+          TuileVertLight : {
+              width: 100,
+              height: 100,
+              backgroundColor: '#1b5e20',
+              opacity: 0.5
+          },
 
-                              },
          TuileRouge : {
-                 width: 100,
-                 height: 100,
-                 backgroundColor: '#bf360c',
-                 marginTop: 25,
-                 opacity: 1
+             width: 100,
+             height: 100,
+             backgroundColor: '#bf360c',
+             marginTop: 25,
+             opacity: 1
+         },
 
-             },
-                 TuileRougeLight : {
-                              width: 100,
-                              height: 100,
-                              backgroundColor: '#bf360c',
-                              marginTop: 25,
-                              opacity: 0.5
+         TuileRougeLight : {
+              width: 100,
+              height: 100,
+              backgroundColor: '#bf360c',
+              marginTop: 25,
+              opacity: 0.5
+         },
 
-                          },
          TuileJaune : {
-                   width: 100,
-                   height: 100,
-                   backgroundColor: '#fbc02d',
-                   marginTop: 25,
-                   opacity: 1
+               width: 100,
+               height: 100,
+               backgroundColor: '#fbc02d',
+               marginTop: 25,
+               opacity: 1
+         },
 
-               },
-                 TuileJauneLight : {
-                                  width: 100,
-                                  height: 100,
-                                  backgroundColor: '#fbc02d',
-                                  marginTop: 25,
-                                  opacity: 0.5
+         TuileJauneLight : {
+              width: 100,
+              height: 100,
+              backgroundColor: '#fbc02d',
+              marginTop: 25,
+              opacity: 0.5
+         },
 
-                              },
          BoutonJouer : {
-                    width: 100,
-                    backgroundColor: '#424242',
-                            flexDirection: 'row',
-                            height: 50,
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            marginTop: 70
-                },
+               width: 100,
+               backgroundColor: '#424242',
+               flexDirection: 'row',
+               height: 50,
+               alignItems: 'center',
+               justifyContent: 'center',
+               marginTop: 70
+         },
+
         textBouton: {
             fontSize: 16,
             fontWeight: 'bold',
             color: 'white'
         },
+
         textPartie: {
             fontSize: 16,
             fontWeight: 'bold',
