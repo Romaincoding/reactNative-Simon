@@ -5,196 +5,193 @@ import { connect } from 'react-redux';
 import { Audio } from 'expo-av';
 import {Dimensions} from 'react-native';
 
+// dimensions du screen du device :
 const windowWidth = Dimensions.get('screen').width;
 const windowHeight = Dimensions.get('screen').height;
-//tableau de couleur ou l'Ia va piocher une couleur au hasard
-var couleurTab = ["Jaune", "Bleu", "Rouge", "Vert"]
+
+//tableau de couleur où l'Ia va piocher une couleur au hasard :
+var couleurTab = ["jaune", "bleu", "rouge", "vert"]
+// tableau où l'on stocke la séquence de l'IA au fur et à mesure :
 var sequenceIa = []
-couleurTab.push("Violet")
+// tableau où l'on stocke la séquence du joueur au fur et à mesure :
+var sequencePlayer = []
+
 console.log(couleurTab);
 console.log(sequenceIa);
 
+const sleep = (milliseconds) => {
+  return new Promise(resolve => setTimeout(resolve, milliseconds))
+}
+
+
 
 export default class Game extends React.Component {
+
    constructor(props) {
       super(props);
-
-
-
       this.state = {
-
-            Simon : {
-             bleu : {
-
-             style : 'TuileBleu'},
-             rouge : {
-
-              style :'TuileRouge'},
-             jaune : {
-
-             style : 'TuileJaune'},
-             vert : {
-
-             style : 'TuileVert'}
-          },
-
-
-          sequenceIa : [],
-
-
-          sequenceJoueur : []
-
-
-
+        Simon : {
+            bleu : {
+                style : 'TuileBleu'
+            },
+            rouge : {
+                style :'TuileRouge'
+             },
+            jaune : {
+                style : 'TuileJaune'
+            },
+            vert : {
+                style : 'TuileVert'
+            }
+        },
       }
-
-
    }
 
-// fonction qui gère les sons
- async componentDidMount (){
-      this.sound = {};
-      this.sound.clickBleu = new Audio.Sound();
-      try {
-              await this.sound.clickBleu.loadAsync( require ('../assets/sound/NoteBleue.wav') );
-            } catch (error) {
-              console.log('errorSound', error);
-            }
-      this.sound.clickJaune = new Audio.Sound();
-      try {
+    // fonction qui gère les sons :
+    async componentDidMount (){
+          this.sound = {};
+          this.sound.clickbleu = new Audio.Sound();
 
-              await this.sound.clickJaune.loadAsync( require ('../assets/sound/NoteJaune.wav') );
-            } catch (error) {
-              console.log('errorSound', error);
-            }
-      this.sound.clickRouge = new Audio.Sound();
-      try {
-
-              await this.sound.clickRouge.loadAsync( require ('../assets/sound/NoteRouge.wav') );
-
-            } catch (error) {
-              console.log('errorSound', error);
-            }
-      this.sound.clickVert = new Audio.Sound();
-      try {
-
-              await this.sound.clickVert.loadAsync( require ('../assets/sound/NoteVerte.wav') );
-
-            } catch (error) {
-              console.log('errorSound', error);
-            }
-      this.sound.clickJouer = new Audio.Sound();
-      try {
-
-              await this.sound.clickJouer.loadAsync( require ('../assets/sound/Debut_de_game.wav') );
-            } catch (error) {
-              console.log('errorSound', error);
-            }
-
-  };
-// fonction ou l'Ia choisit une couleur aléatoire et la joue et remplit son tableau de séquence Ia
- selectionCouleur = () =>{
-
-     var couleur = couleurTab[Math.floor(Math.random() * 4)]
-
-  // console.log(tableauRemplit)
-
-     switch (couleur){
-
-         case "Jaune":
-
-        this.setState({...this.state, Simon: {...this.state.Simon, jaune: {...this.state.Simon.jaune, style: 'TuileJauneLight'}}});
-        this.sound.clickJaune.replayAsync();
-        sequenceIa.push("Jaune");
-          console.log(sequenceIa);
+          try {
+                  await this.sound.clickbleu.loadAsync( require ('../assets/sound/NoteBleue.wav') );
+                } catch (error) {
+                  console.log('errorSound', error);
+                }
+          this.sound.clickjaune = new Audio.Sound();
+          try {
+                  await this.sound.clickjaune.loadAsync( require ('../assets/sound/NoteJaune.wav') );
+                } catch (error) {
+                  console.log('errorSound', error);
+                }
+          this.sound.clickrouge = new Audio.Sound();
+          try {
+                  await this.sound.clickrouge.loadAsync( require ('../assets/sound/NoteRouge.wav') );
+                } catch (error) {
+                  console.log('errorSound', error);
+                }
+          this.sound.clickvert = new Audio.Sound();
+          try {
+                  await this.sound.clickvert.loadAsync( require ('../assets/sound/NoteVerte.wav') );
+                } catch (error) {
+                  console.log('errorSound', error);
+                }
+          this.sound.clickJouer = new Audio.Sound();
+          try {
+                  await this.sound.clickJouer.loadAsync( require ('../assets/sound/Debut_de_game.wav') );
+                } catch (error) {
+                  console.log('errorSound', error);
+                }
+     };
 
 
 
-        break;
+     async playIa() {
+             var i;
+             for(i = 0;i< 23;i++){
+             this.selectionCouleur();
 
-         case "Bleu":
-
-      this.setState({...this.state, Simon: {...this.state.Simon, bleu: {...this.state.Simon.bleu, style: 'TuileBleuLight'}}});
-      this.sound.clickBleu.replayAsync();
-        sequenceIa.push("Bleu");
-          console.log(sequenceIa);
-
-
-      break;
-         case "Rouge":
-
-      this.setState({...this.state, Simon: {...this.state.Simon, rouge: {...this.state.Simon.rouge, style: 'TuileRougeLight'}}});
-      this.sound.clickRouge.replayAsync();
-        sequenceIa.push("Rouge");
-          console.log(sequenceIa);
+             await sleep(700)
+             this.setState({...this.state, Simon: {...this.state.Simon, jaune: {...this.state.Simon.jaune, style: 'TuileJaune'}}});
+             this.setState({...this.state, Simon: {...this.state.Simon, bleu: {...this.state.Simon.bleu, style: 'TuileBleu'}}});
+             this.setState({...this.state, Simon: {...this.state.Simon, rouge: {...this.state.Simon.rouge, style: 'TuileRouge'}}});
+             this.setState({...this.state, Simon: {...this.state.Simon, vert: {...this.state.Simon.vert, style: 'TuileVert'}}});
+         }
 
 
-      break;
 
-         case "Vert":
+     }
 
-                this.sound.clickVert.replayAsync();
-       this.setState( {...this.state, Simon: {...this.state.Simon, vert: {...this.state.Simon.vert, style: 'TuileVertLight'}}});
-         sequenceIa.push("Vert");
-           console.log(sequenceIa);
-         break;
+    // fonction ou l'Ia choisit une couleur aléatoire et la joue et remplit son tableau de séquenceIa :
+    selectionCouleur = () =>{
 
-        console.log(sequenceIa);
+         var couleur = couleurTab[Math.floor(Math.random() * 4)]
+          console.log("selection coucou" + couleur)
+         switch (couleur){
+            case "jaune":
+                this.setState({...this.state, Simon: {...this.state.Simon, jaune: {...this.state.Simon.jaune, style: 'TuileJauneLight'}}});
+                this.sound.clickjaune.replayAsync();
+                sequenceIa.push("jaune");
+                console.log(sequenceIa);
+            break;
 
-      };
+            case "bleu":
+                this.setState({...this.state, Simon: {...this.state.Simon, bleu: {...this.state.Simon.bleu, style: 'TuileBleuLight'}}});
+                this.sound.clickbleu.replayAsync();
+                sequenceIa.push("bleu");
+                console.log(sequenceIa);
+            break;
+            case "rouge":
+                this.setState({...this.state, Simon: {...this.state.Simon, rouge: {...this.state.Simon.rouge, style: 'TuileRougeLight'}}});
+                this.sound.clickrouge.replayAsync();
+                sequenceIa.push("rouge");
+                console.log(sequenceIa);
+            break;
+            case "vert":
+                this.sound.clickvert.replayAsync();
+                this.setState( {...this.state, Simon: {...this.state.Simon, vert: {...this.state.Simon.vert, style: 'TuileVertLight'}}});
+                sequenceIa.push("vert");
+                console.log(sequenceIa);
+            break;
+            console.log(sequenceIa);
+          };
+     }
 
- }
+    // fonction activée lorsque le joueur appuie sur une tuile :
+    playPlayer(couleur) {
+          sequencePlayer.push(couleur)
+          switch (couleur){
+            case "jaune":
+                this.sound.clickjaune.replayAsync()
+            break;
+            case "bleu":
+                this.sound.clickbleu.replayAsync()
+            break;
+            case "rouge":
+                this.sound.clickrouge.replayAsync()
+            break;
+            case "vert":
+                this.sound.clickvert.replayAsync()
+            break;
+          };
+           console.log(sequencePlayer);
+    };
 
-  playSound(couleur) {
-    sequenceIa.push(couleur)
-    this.sound['note' + couleur].replayAsync();
-    console.log(sequenceIa);
-    //noteAJouer.replayAsync();
-  };
+    //fonction timer
 
- render(){
+    render(){
+         return (
+           // (TouchableOpacity car une view est incompatible avec un onPress)
+           <View style={styles.ContainerTuiles}>
 
-     return (
-       // TouchableOpacity car une view est incompatible avec un onPress
-       <View style={styles.ContainerTuiles}>
-
-           <View style={styles.RangeeTuiles}>
-                 <Text style={styles.textPartie}>Séquences retenues : 1</Text>
-            </View>
-
-           <View style={styles.RangeeTuiles}>
-
-             <TouchableOpacity style={styles[this.state.Simon.bleu.style]} activeOpacity={0.6} onPress= {() =>this.playSound(Bleu)}/>
-             <TouchableOpacity  style={styles[this.state.Simon.vert.style]} activeOpacity={0.6} onPress= {() =>this.playSound(Vert)}/>
-           </View>
-
-           <View style={styles.RangeeTuiles}>
-             <TouchableOpacity style={styles[this.state.Simon.rouge.style]} activeOpacity={0.6} onPress= {() =>this.playSound(Rouge)}/>
-             <TouchableOpacity style={styles[this.state.Simon.jaune.style]} activeOpacity={0.6} onPress= {() =>this.playSound(Jaune)}/>
-
-           </View>
-
-           <View style={styles.RangeeTuiles}>
-             <TouchableOpacity activeOpacity={0.6} style={styles.BoutonJouer} onPress= {() =>this.selectionCouleur()}>
-
-                 <Text style={styles.textBouton}>Jouer</Text>
-             </TouchableOpacity>
-            </View>
-
-
-            <TouchableOpacity>
-                <View>
-                    <Text>Start</Text>
+               <View style={styles.RangeeTuiles}>
+                     <Text style={styles.textPartie}>Séquences retenues : 1</Text>
                 </View>
-            </TouchableOpacity>
 
-       </View>
-     );
+               <View style={styles.RangeeTuiles}>
 
-   }
+                 <TouchableOpacity style={styles[this.state.Simon.bleu.style]} activeOpacity={0.6} onPress= {() =>this.playPlayer("bleu")}/>
+                 <TouchableOpacity  style={styles[this.state.Simon.vert.style]} activeOpacity={0.6} onPress= {() =>this.playPlayer("vert")}/>
+               </View>
 
- }
+               <View style={styles.RangeeTuiles}>
+                 <TouchableOpacity style={styles[this.state.Simon.rouge.style]} activeOpacity={0.6} onPress= {() =>this.playPlayer("rouge")}/>
+                 <TouchableOpacity style={styles[this.state.Simon.jaune.style]} activeOpacity={0.6} onPress= {() =>this.playPlayer("jaune")}/>
 
+               </View>
+
+               <View style={styles.RangeeTuiles}>
+                 <TouchableOpacity activeOpacity={0.6} style={styles.BoutonJouer} onPress= {() =>this.playIa()}>
+
+                     <Text style={styles.textBouton}>Jouer</Text>
+                 </TouchableOpacity>
+                </View>
+
+           </View>
+         );
+       }
+     }
+
+// Style des éléments de l'écran :
    const styles = StyleSheet.create({
          ContainerTuiles : {
              width: windowWidth/1.5,
@@ -203,104 +200,86 @@ export default class Game extends React.Component {
              marginTop: 100,
          },
          RangeeTuiles : {
-                 flex: 1,
-                 flexDirection: 'row',
-                 justifyContent: 'space-around'
-                         },
+             flex: 1,
+             flexDirection: 'row',
+             justifyContent: 'space-around'
+          },
          TuileBleu : {
-                 width: 100,
-                 height: 100,
-                 backgroundColor: "#01579b",
-                 opacity: 1
-
-             },
-              TuileBleuLight : {
-                              width: 100,
-                              height: 100,
-                              backgroundColor: "#01579b",
-                              opacity: 0.5
-
-                          },
+             width: 100,
+             height: 100,
+             backgroundColor: "#01579b",
+             borderRadius: 8,
+             opacity: 1
+          },
+          TuileBleuLight : {
+              width: 100,
+              height: 100,
+              backgroundColor: "#01579b",
+              borderRadius: 8,
+              opacity: 0.5
+          },
          TuileVert : {
-                   width: 100,
-                   height: 100,
-                   backgroundColor: '#1b5e20',
-                   opacity: 1
-
-               },
-                  TuileVertLight : {
-                                  width: 100,
-                                  height: 100,
-                                  backgroundColor: '#1b5e20',
-                                  opacity: 0.5
-
-                              },
+               width: 100,
+               height: 100,
+               backgroundColor: '#1b5e20',
+               borderRadius: 8,
+               opacity: 1
+          },
+         TuileVertLight : {
+               width: 100,
+               height: 100,
+               backgroundColor: '#1b5e20',
+               borderRadius: 8,
+               opacity: 0.5
+          },
          TuileRouge : {
-                 width: 100,
-                 height: 100,
-                 backgroundColor: '#bf360c',
-                 marginTop: 25,
-                 opacity: 1
-
-             },
-                 TuileRougeLight : {
-                              width: 100,
-                              height: 100,
-                              backgroundColor: '#bf360c',
-                              marginTop: 25,
-                              opacity: 0.5
-
-                          },
+               width: 100,
+               height: 100,
+               backgroundColor: '#bf360c',
+               marginTop: 25,
+               borderRadius: 8,
+               opacity: 1
+          },
+         TuileRougeLight : {
+               width: 100,
+               height: 100,
+               backgroundColor: '#bf360c',
+               marginTop: 25,
+               borderRadius: 8,
+               opacity: 0.5
+          },
          TuileJaune : {
-                   width: 100,
-                   height: 100,
-                   backgroundColor: '#fbc02d',
-                   marginTop: 25,
-                   opacity: 1
-
-               },
-                 TuileJauneLight : {
-                                  width: 100,
-                                  height: 100,
-                                  backgroundColor: '#fbc02d',
-                                  marginTop: 25,
-                                  opacity: 0.5
-
-                              },
+               width: 100,
+               height: 100,
+               backgroundColor: '#fbc02d',
+               marginTop: 25,
+               borderRadius: 8,
+               opacity: 1
+          },
+         TuileJauneLight : {
+               width: 100,
+               height: 100,
+               backgroundColor: '#fbc02d',
+               marginTop: 25,
+               borderRadius: 8,
+               opacity: 0.5
+          },
          BoutonJouer : {
-                    width: 100,
-                    backgroundColor: '#424242',
-                    flexDirection: 'row',
-                    height: 50,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    marginTop: 70
-                },
-        textBouton: {
-            fontSize: 16,
-            fontWeight: 'bold',
-            color: 'white'
-        },
-        textPartie: {
-            fontSize: 16,
-            fontWeight: 'bold',
-        }
+               width: 100,
+               backgroundColor: '#424242',
+               flexDirection: 'row',
+               height: 50,
+               alignItems: 'center',
+               justifyContent: 'center',
+               marginTop: 70
+          },
+         textBouton: {
+               fontSize: 16,
+               fontWeight: 'bold',
+               color: 'white'
+          },
+         textPartie: {
+               fontSize: 16,
+               fontWeight: 'bold',
+          }
  });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
