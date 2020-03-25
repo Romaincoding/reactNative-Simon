@@ -53,17 +53,25 @@ export default class Game extends React.Component {
 
  }
  async componentDidMount (){
-          this.sound = {};
-          this.sound.click = new Audio.Sound();
-          try {
-          await this.sound.click.loadAsync( require ('../assets/sound/testSound.wav') );
-          } catch (error) {
-          console.log('errorSound', error);
-          }
-      };
-      _onPress() {
-      this.sound.click.replayAsync();
-      };
+      this.sound = {};
+      this.sound.clickBleu = new Audio.Sound();
+      this.sound.clickJaune = new Audio.Sound();
+      this.sound.clickRouge = new Audio.Sound();
+      this.sound.clickVert = new Audio.Sound();
+      this.sound.clickJouer = new Audio.Sound();
+      try {
+        await this.sound.clickBleu.loadAsync( require ('../assets/sound/NoteBleue.wav') );
+        await this.sound.clickJaune.loadAsync( require ('../assets/sound/NoteJaune.wav') );
+        await this.sound.clickRouge.loadAsync( require ('../assets/sound/NoteRouge.wav') );
+        await this.sound.clickVert.loadAsync( require ('../assets/sound/NoteVerte.wav') );
+        await this.sound.clickJouer.loadAsync( require ('../assets/sound/Debut_de_game.wav') );
+      } catch (error) {
+        console.log('errorSound', error);
+      }
+  };
+  _onPress(noteAJouer) {
+    noteAJouer.replayAsync();
+  };
 
  render(){
 
@@ -76,27 +84,20 @@ export default class Game extends React.Component {
             </View>
 
            <View style={styles.RangeeTuiles}>
-             <TouchableOpacity style={this.state.Simon.bleu.style} activeOpacity={0.6}/>
-             <TouchableOpacity  style={this.state.Simon.vert.style} activeOpacity={0.6}/>
+             <TouchableOpacity style={this.state.Simon.bleu.style} activeOpacity={0.6} onPress= {() =>this._onPress(this.sound.clickBleu)}/>
+             <TouchableOpacity  style={this.state.Simon.vert.style} activeOpacity={0.6} onPress= {() =>this._onPress(this.sound.clickVert)}/>
            </View>
 
            <View style={styles.RangeeTuiles}>
-             <TouchableOpacity style={this.state.Simon.rouge.style} activeOpacity={0.6}/>
-             <TouchableOpacity style={this.state.Simon.jaune.style} activeOpacity={0.6}/>
+             <TouchableOpacity style={this.state.Simon.rouge.style} activeOpacity={0.6} onPress= {() =>this._onPress(this.sound.clickRouge)}/>
+             <TouchableOpacity style={this.state.Simon.jaune.style} activeOpacity={0.6} onPress= {() =>this._onPress(this.sound.clickJaune)}/>
            </View>
 
            <View style={styles.RangeeTuiles}>
-             <TouchableOpacity activeOpacity={0.6} style={styles.BoutonJouer}>
+             <TouchableOpacity activeOpacity={0.6} style={styles.BoutonJouer} onPress= {() =>this._onPress(this.sound.clickJouer)}>
                  <Text style={styles.textBouton}>Jouer</Text>
              </TouchableOpacity>
             </View>
-
-            <TouchableOpacity onPress= {() =>this._onPress()}>
-                <View>
-                    <Text>Start</Text>
-                </View>
-            </TouchableOpacity>
-
        </View>
      );
 
