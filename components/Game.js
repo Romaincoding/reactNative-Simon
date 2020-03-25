@@ -45,7 +45,7 @@ export default class Game extends React.Component {
           this.sound = {};
           this.sound.click = new Audio.Sound();
           try {
-          await this.sound.click.loadAsync( require ('../assets/sound/amelie_poulain.mp3') );
+          await this.sound.click.loadAsync( require ('../assets/sound/testSound.wav') );
           } catch (error) {
           console.log('errorSound', error);
           }
