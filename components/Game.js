@@ -26,9 +26,6 @@ const sleep = (milliseconds) => {
   return new Promise(resolve => setTimeout(resolve, milliseconds))
 }
 
-
-
-
 export default class Game extends React.Component {
     tour;
 
@@ -36,8 +33,8 @@ export default class Game extends React.Component {
       super(props);
       this.tour = "IA";
       this.state = {
-
-        Simon : {
+        tourDuJoueur: "IA",
+        Simon: {
             bleu : {
                 style : 'TuileBleu'
             },
@@ -53,6 +50,13 @@ export default class Game extends React.Component {
         },
       }
    }
+
+    startNewGame(){
+        sequenceIa = [];
+        sequencePlayer = [];
+        compteurTour = 0;
+        this.playIa();
+    }
 
     // fonction qui gère les sons :
     async componentDidMount (){
@@ -96,36 +100,26 @@ export default class Game extends React.Component {
                 }
      };
 
-
-//https://flaviocopes.com/javascript-sleep/
-
 // boucle en dur qui joue une suite de couleur et state qui se réinitialise pour que les boutons ne restent pas opaques
      async playIa() {
      console.log("state = " + this.state.turn)
-   //  if (this.state.turn == "IA") {
     if (this.tour == "IA") {
              var i;
-             //this.selectionCouleur();
-             // on rajoute un element random dans le tableau
-             // ici
-           var couleur = this.getRandomColor();
-
+             // on rajoute un element random dans le tableau ici
+             var couleur = this.getRandomColor();
              sequenceIa.push(couleur);
-
-
-                // Jouer les sons contenus du tableau
+             // Jouer les sons contenus du tableau
              for(i = 0; i < sequenceIa.length ; i++){
-
-                    this.selectionCouleur(sequenceIa[i]);
-                    
+                 this.selectionCouleur(sequenceIa[i]);
+                 //https://flaviocopes.com/javascript-sleep/ :
                  await sleep(700) // pause afin de laisser l'humain entendre le son et voir les boutons s'afficher
                  this.setState({...this.state, Simon: {...this.state.Simon, jaune: {...this.state.Simon.jaune, style: 'TuileJaune'}}});
                  this.setState({...this.state, Simon: {...this.state.Simon, bleu: {...this.state.Simon.bleu, style: 'TuileBleu'}}});
                  this.setState({...this.state, Simon: {...this.state.Simon, rouge: {...this.state.Simon.rouge, style: 'TuileRouge'}}});
                  this.setState({...this.state, Simon: {...this.state.Simon, vert: {...this.state.Simon.vert, style: 'TuileVert'}}});
          }
-            this.setState({...this.state, turn : "Player"})
-            console.log("taille du IATab dans playIA: " + sequenceIa.length);
+             this.setState({...this.state, tourDuJoueur : "Player"})
+             console.log("taille du IATab dans playIA: " + sequenceIa.length);
         }
      }
 
@@ -208,7 +202,7 @@ export default class Game extends React.Component {
 
           if(clickJoueur == sequenceIa.length) {
           console.log("taille du IATab dans playPlayerJaune: " + sequenceIa.length);
-             this.setState({...this.state, turn : "IA"})
+          this.setState({...this.state, tourDuJoueur : "IA"})
              this.tour = "IA";
              compteurTour++;
            await  sleep(1000)
@@ -231,8 +225,8 @@ export default class Game extends React.Component {
 
     render(){
     var tourJoueur; // variable qui va stocker et afficher le tour du joueur (via une balise <text>)
-    if (this.tour == "Player"){ // affichage du contenu suivant si le state est similaire
-        tourJoueur = <Text> Ton tour garçon </Text>
+    if (this.state.tourDuJoueur == "Player"){ // affichage du contenu suivant si le state est similaire
+        tourJoueur = <Text style={styles.ATonTour}>A ton tour</Text>
     }
 
          return (
@@ -241,23 +235,25 @@ export default class Game extends React.Component {
 
                <View style={styles.RangeeTuiles}>
                      <Text style={styles.textPartie}>Séquences retenues : {compteurTour}</Text>
+                </View>
+               <View style={styles.RangeeTuiles}>
                      {tourJoueur}
                 </View>
 
                <View style={styles.RangeeTuiles}>
 
-                 <TouchableOpacity style={styles[this.state.Simon.bleu.style]} activeOpacity={0.6} onPress= {() =>this.playPlayer("bleu")}/>
-                 <TouchableOpacity  style={styles[this.state.Simon.vert.style]} activeOpacity={0.6} onPress= {() =>this.playPlayer("vert")}/>
+                 <TouchableOpacity style={styles[this.state.Simon.bleu.style]} activeOpacity={0.5} onPress= {() =>this.playPlayer("bleu")}/>
+                 <TouchableOpacity  style={styles[this.state.Simon.vert.style]} activeOpacity={0.5} onPress= {() =>this.playPlayer("vert")}/>
                </View>
 
                <View style={styles.RangeeTuiles}>
-                 <TouchableOpacity style={styles[this.state.Simon.rouge.style]} activeOpacity={0.6} onPress= {() =>this.playPlayer("rouge")}/>
-                 <TouchableOpacity style={styles[this.state.Simon.jaune.style]} activeOpacity={0.6} onPress= {() =>this.playPlayer("jaune")}/>
+                 <TouchableOpacity style={styles[this.state.Simon.rouge.style]} activeOpacity={0.5} onPress= {() =>this.playPlayer("rouge")}/>
+                 <TouchableOpacity style={styles[this.state.Simon.jaune.style]} activeOpacity={0.5} onPress= {() =>this.playPlayer("jaune")}/>
 
                </View>
 
                <View style={styles.RangeeTuiles}>
-                 <TouchableOpacity activeOpacity={0.6} style={styles.BoutonJouer} onPress= {() =>this.playIa()}>
+                 <TouchableOpacity activeOpacity={0.6} style={styles.BoutonJouer} onPress= {() =>this.startNewGame()}>
 
                      <Text style={styles.textBouton}>Jouer</Text>
                  </TouchableOpacity>
@@ -272,7 +268,7 @@ export default class Game extends React.Component {
    const styles = StyleSheet.create({
          ContainerTuiles : {
              width: windowWidth/1.5,
-             height: windowHeight/2,
+             height: windowHeight/1.5,
              marginLeft: windowWidth/6,
              marginTop: 100,
          },
