@@ -94,20 +94,14 @@ export default class Game extends React.Component {
              for(i = 0;i< 5;i++){
              this.selectionCouleur();
 
-
              await sleep(700) // pause afin de laisser l'humain entendre le son et voir les boutons s'afficher
              this.setState({...this.state, Simon: {...this.state.Simon, jaune: {...this.state.Simon.jaune, style: 'TuileJaune'}}});
              this.setState({...this.state, Simon: {...this.state.Simon, bleu: {...this.state.Simon.bleu, style: 'TuileBleu'}}});
              this.setState({...this.state, Simon: {...this.state.Simon, rouge: {...this.state.Simon.rouge, style: 'TuileRouge'}}});
              this.setState({...this.state, Simon: {...this.state.Simon, vert: {...this.state.Simon.vert, style: 'TuileVert'}}});
-
          }
             this.setState({...this.state, turn : "Player"})
-
-
      }
-
-
 
     // fonction ou l'Ia choisit une couleur aléatoire et la joue et remplit son tableau de séquenceIa :
     selectionCouleur = () =>{
@@ -204,7 +198,7 @@ export default class Game extends React.Component {
 
                <View style={styles.RangeeTuiles}>
                      <Text style={styles.textPartie}>Séquences retenues : 1</Text>
-                     {tourJoueur} //peut être vide
+                     {tourJoueur}
                 </View>
 
                <View style={styles.RangeeTuiles}>
