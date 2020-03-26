@@ -1,6 +1,30 @@
+/*import { reduxFirestore, firestoreReducer } from 'redux-firestore';
+import firebase from 'firebase/app';
+import 'firebase/auth';
+import 'firebase/database';
+import 'firebase/firestore';*/
+import firebase from 'firebase'
+import '@firebase/firestore';
+
 import {
   EDIT_PROFIL
 } from './actions'
+
+const firebaseConfig = {
+    apiKey: "AIzaSyDyswacIXX8nxEu2WUM8p39GVFbZaI3mU4",
+    authDomain: "simon-s-game.firebaseapp.com",
+    databaseURL: "https://simon-s-game.firebaseio.com",
+    projectId: "simon-s-game",
+    storageBucket: "simon-s-game.appspot.com",
+    messagingSenderId: "177031237782",
+    appId: "1:177031237782:web:91d5d46745e145b97bb2b7",
+    measurementId: "G-L36T2JKL4R"
+  };
+
+firebase.initializeApp(firebaseConfig);
+
+//const dB = firebase.firestore();
+
 
 const initialState = {
 
@@ -8,21 +32,8 @@ const initialState = {
 
 //  @param      {String}  {pseudo}
     score: [ {
-
-        joueur:"Michel ",
-        scores: "3 "
-    },
-    {
-        joueur:"Romain ",
-        scores:"5 "
-    },
-    {
-        joueur:"Hugo ",
-        scores: "7 "
-    },
-    {
-        joueur:"Bertand ",
-        scores: "8 "
+        joueur:"",
+        scores: ""
     }],
 
     // state.team
@@ -50,6 +61,30 @@ const initialState = {
     }
 
  }
+firebase.database().ref('score').child('-M3MEWMtGK2rPWyuJPtX').remove();
+var result;
+
+firebase.database().ref('score').on("value", function(snapshot) {
+result = snapshot.val();
+for (let key of Object.keys(result)) {
+result[key].pseudo;
+    }
+});
+/*firebase.database().ref('score').push({
+
+		pseudo: 'test',
+		highscore: 1234
+	});
+
+	firebase.database().ref('score').push({
+    		pseudo: 'lolo',
+    		highscore: 14
+    	});
+
+    	firebase.database().ref('score').push({
+        		pseudo: 'tania',
+        		highscore: 4
+        	});*/
 
 
 export default function reducer(state = initialState, action) {
