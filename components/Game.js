@@ -33,6 +33,7 @@ export default class Game extends React.Component {
       super(props);
       this.tour = "IA";
       this.state = {
+        seconds: 0,
         tourDuJoueur: "IA",
         Simon: {
             bleu : {
@@ -60,6 +61,7 @@ export default class Game extends React.Component {
 
     // fonction qui gère les sons :
     async componentDidMount (){
+
           this.sound = {};
           this.sound.clickbleu = new Audio.Sound();
 
@@ -98,11 +100,24 @@ export default class Game extends React.Component {
                 } catch (error) {
                   console.log('errorSound', error);
                 }
+
+          this.myInterval = setInterval(() => {
+              const {seconds} = this.state;
+              if (seconds > 0) {
+                  this.setState(({ seconds }) => ({
+                      seconds: seconds - 1
+                  }))
+              }
+          }, 1000)
      };
 
-// boucle en dur qui joue une suite de couleur et state qui se réinitialise pour que les boutons ne restent pas opaques
-     async playIa() {
-     console.log("state = " + this.state.turn)
+    componentWillUnmount() {
+          clearInterval(this.myInterval)
+    }
+
+    // boucle en dur qui joue une suite de couleur et state qui se réinitialise pour que les boutons ne restent pas opaques
+    async playIa() {
+    console.log("state = " + this.state.turn)
     if (this.tour == "IA") {
              var i;
              // on rajoute un element random dans le tableau ici
@@ -119,7 +134,7 @@ export default class Game extends React.Component {
                  this.setState({...this.state, Simon: {...this.state.Simon, vert: {...this.state.Simon.vert, style: 'TuileVert'}}});
          }
              this.setState({...this.state, tourDuJoueur : "Player"})
-             console.log("taille du IATab dans playIA: " + sequenceIa.length);
+             this.setState({...this.state, seconds : 10})
         }
      }
 
@@ -171,6 +186,7 @@ export default class Game extends React.Component {
                 this.sound.clickGameOver.replayAsync()
                 } else{
                     this.sound.clickjaune.replayAsync()
+                    this.setState({...this.state, seconds : 10})
                     clickJoueur++;
                     }
                 break;
@@ -179,6 +195,7 @@ export default class Game extends React.Component {
                    this.sound.clickGameOver.replayAsync()
                 } else{
                    this.sound.clickbleu.replayAsync()
+                   this.setState({...this.state, seconds : 10})
                    clickJoueur++;
                 }
                 break;
@@ -187,6 +204,7 @@ export default class Game extends React.Component {
                     this.sound.clickGameOver.replayAsync()
                 } else{
                     this.sound.clickrouge.replayAsync()
+                    this.setState({...this.state, seconds : 10})
                     clickJoueur++;
                 }
                 break;
@@ -195,6 +213,7 @@ export default class Game extends React.Component {
                    this.sound.clickGameOver.replayAsync()
                 } else {
                     this.sound.clickvert.replayAsync()
+                    this.setState({...this.state, seconds : 10})
                     clickJoueur++;
                 }
                 break;
@@ -221,12 +240,12 @@ export default class Game extends React.Component {
           // console.log("tableau joueur après " +sequenceIa);
     };
 
-    //fonction timer
 
     render(){
+    const {seconds} = this.state;
     var tourJoueur; // variable qui va stocker et afficher le tour du joueur (via une balise <text>)
     if (this.state.tourDuJoueur == "Player"){ // affichage du contenu suivant si le state est similaire
-        tourJoueur = <Text style={styles.ATonTour}>A ton tour</Text>
+        tourJoueur = <Text style={styles.ATonTour}>A ton tour ! Temps restant : {seconds}</Text>
     }
 
          return (
