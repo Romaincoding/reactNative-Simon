@@ -30,13 +30,13 @@ const sleep = (milliseconds) => {
 
 
 export default class Game extends React.Component {
-tour;
+    tour;
+
    constructor(props) {
       super(props);
       this.tour = "IA";
       this.state = {
 
-        turn : "IA",
         Simon : {
             bleu : {
                 style : 'TuileBleu'
@@ -114,11 +114,10 @@ tour;
 
 
                 // Jouer les sons contenus du tableau
-             for(i = 0; i< compteurTour+1 ; i++){
-                    this.selectionCouleur(couleur);
+             for(i = 0; i < sequenceIa.length ; i++){
 
-
-
+                    this.selectionCouleur(sequenceIa[i]);
+                    
                  await sleep(700) // pause afin de laisser l'humain entendre le son et voir les boutons s'afficher
                  this.setState({...this.state, Simon: {...this.state.Simon, jaune: {...this.state.Simon.jaune, style: 'TuileJaune'}}});
                  this.setState({...this.state, Simon: {...this.state.Simon, bleu: {...this.state.Simon.bleu, style: 'TuileBleu'}}});
@@ -179,16 +178,6 @@ tour;
                 } else{
                     this.sound.clickjaune.replayAsync()
                     clickJoueur++;
-                    if(clickJoueur == sequenceIa.length) {
-                    console.log("taille du IATab dans playPlayerJaune: " + sequenceIa.length);
-                       this.setState({...this.state, turn : "IA"})
-                       this.tour = "IA";
-                       compteurTour++;
-                     await  sleep(1000)
-                       clickJoueur = 0;
-                       this.playIa();
-
-                    }
                     }
                 break;
                 case "bleu":
@@ -197,15 +186,6 @@ tour;
                 } else{
                    this.sound.clickbleu.replayAsync()
                    clickJoueur++;
-                   if(clickJoueur == sequenceIa.length) {
-                   console.log("taille du IATab: " + sequenceIa.length);
-                       this.setState({...this.state, turn : "IA"})
-                       compteurTour++;
-                       this.tour = "IA";
-                      await sleep(1000)
-                        clickJoueur = 0;
-                       this.playIa();
-                   }
                 }
                 break;
                 case "rouge":
@@ -214,15 +194,6 @@ tour;
                 } else{
                     this.sound.clickrouge.replayAsync()
                     clickJoueur++;
-                    if(clickJoueur == sequenceIa.length) {
-                    console.log("taille du IATab: " + sequenceIa.length);
-                       this.setState({...this.state, turn : "IA"})
-                       compteurTour++;
-                       this.tour = "IA";
-                          await sleep(1000)
-                            clickJoueur = 0;
-                       this.playIa();
-                    }
                 }
                 break;
                 case "vert":
@@ -231,28 +202,29 @@ tour;
                 } else {
                     this.sound.clickvert.replayAsync()
                     clickJoueur++;
-                    if(clickJoueur == sequenceIa.length) {
-                    console.log("taille du IATab: " + sequenceIa.length);
-                       this.setState({...this.state, turn : "IA"})
-                       compteurTour++;
-                       this.tour = "IA";
-                          await sleep(1000)
-                          clickJoueur = 0;
-                       this.playIa();
-                    }
                 }
                 break;
           };
-          console.log("reçu : " + couleur);
 
+          if(clickJoueur == sequenceIa.length) {
+          console.log("taille du IATab dans playPlayerJaune: " + sequenceIa.length);
+             this.setState({...this.state, turn : "IA"})
+             this.tour = "IA";
+             compteurTour++;
+           await  sleep(1000)
+             clickJoueur = 0;
+             this.playIa();
+          }
+
+          console.log("reçu : " + couleur);
           console.log("attendu : " +sequenceIa[clickJoueur]);
           console.log("clique joueur : " + clickJoueur);
+          console.log("sequenceIa =" + sequenceIa);
 
-
-         // console.log("tableau joueur avant pop " +sequenceIa);
+          // console.log("tableau joueur avant pop " +sequenceIa);
           //j'enlève le premier élément du tableau : comme ça on a toujours le prochain élément à comparer à la même position
           // à faire il faut garder en mémoire le tableau de l'Ia pour le tour d'après, faire un deuxième tableau temporaire?
-         // console.log("tableau joueur après " +sequenceIa);
+          // console.log("tableau joueur après " +sequenceIa);
     };
 
     //fonction timer
