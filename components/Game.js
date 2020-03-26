@@ -83,6 +83,12 @@ export default class Game extends React.Component {
                 } catch (error) {
                   console.log('errorSound', error);
                 }
+          this.sound.clickGameOver = new Audio.Sound();
+          try {
+                  await this.sound.clickGameOver.loadAsync( require ('../assets/sound/motus-boule-noire.mp3') );
+                } catch (error) {
+                  console.log('errorSound', error);
+                }
      };
 
 
