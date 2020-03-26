@@ -86,14 +86,16 @@ export default class Game extends React.Component {
      };
 
 
+//https://flaviocopes.com/javascript-sleep/
 
+// boucle en dur qui joue une suite de couleur et state qui se réinitialise pour que les boutons ne restent pas opaques
      async playIa() {
              var i;
              for(i = 0;i< 5;i++){
              this.selectionCouleur();
 
 
-             await sleep(700)
+             await sleep(700) // pause afin de laisser l'humain entendre le son et voir les boutons s'afficher
              this.setState({...this.state, Simon: {...this.state.Simon, jaune: {...this.state.Simon.jaune, style: 'TuileJaune'}}});
              this.setState({...this.state, Simon: {...this.state.Simon, bleu: {...this.state.Simon.bleu, style: 'TuileBleu'}}});
              this.setState({...this.state, Simon: {...this.state.Simon, rouge: {...this.state.Simon.rouge, style: 'TuileRouge'}}});
@@ -180,6 +182,8 @@ export default class Game extends React.Component {
            console.log("attendu : " +sequenceIa[0]);
 
            console.log("tableau joueur avant pop " +sequenceIa);
+           //j'enlève le premier élément du tableau : comme ça on a toujours le prochain élément à comparer à la même position
+           // à faire il faut garder en mémoire le tableau de l'Ia pour le tour d'après, faire un deuxième tableau temporaire?
           sequenceIa.shift();
            console.log("tableau joueur après " +sequenceIa);
     };
@@ -187,8 +191,8 @@ export default class Game extends React.Component {
     //fonction timer
 
     render(){
-    var tourJoueur;
-    if (this.state.turn == "Player"){
+    var tourJoueur; // création d'une variable qui peut contenir une balise html
+    if (this.state.turn == "Player"){ // affichage du contenu suivant si le state est similaire
         tourJoueur = <Text> Ton tour garçon </Text>
 
 
@@ -200,7 +204,7 @@ export default class Game extends React.Component {
 
                <View style={styles.RangeeTuiles}>
                      <Text style={styles.textPartie}>Séquences retenues : 1</Text>
-                     {tourJoueur}
+                     {tourJoueur} //peut être vide
                 </View>
 
                <View style={styles.RangeeTuiles}>
