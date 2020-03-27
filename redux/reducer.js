@@ -6,11 +6,6 @@ import {
 } from './actions'
 
 
-firebase.initializeApp(firebaseConfig);
-
-//const dB = firebase.firestore();
-
-
 
 //firebase.database().ref('score').child('-M3MEWMtGK2rPWyuJPtX').remove();
 var result;
@@ -123,11 +118,31 @@ let initialState = {
 //  Profil datas [{Object}]
 
 //  @param      {String}  {pseudo}
+<<<<<<< HEAD
     score:{
     facile:scoreTableFacile,
     intermediaire:scoreTableIntermediaire,
     difficile:scoreTableDifficile
     },
+=======
+    score: [ {
+
+        joueur:"Michel ",
+        scores: "3 "
+    },
+    {
+        joueur:"Romain ",
+        scores:"5 "
+    },
+    {
+        joueur:"Hugo ",
+        scores: "7 "
+    },
+    {
+        joueur:"Bertand ",
+        scores: "8 "
+    }],
+>>>>>>> master
 
     // state.team
      team: [ {
@@ -152,6 +167,13 @@ let initialState = {
     profil: {
     pseudo:'',
     niveau:'',
+
+
+
+
+>>>>>>> master
+
+
 
  }
 
