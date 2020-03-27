@@ -4,7 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { connect } from 'react-redux';
 import { Audio } from 'expo-av';
 import {Dimensions} from 'react-native';
-
+import {editManches} from '../redux/actions';
 // dimensions du screen du device :
 const windowWidth = Dimensions.get('screen').width;
 const windowHeight = Dimensions.get('screen').height;
@@ -26,16 +26,22 @@ const sleep = (milliseconds) => {
   return new Promise(resolve => setTimeout(resolve, milliseconds))
 }
 
-export default class Game extends React.Component {
-    tour;
 
-   constructor(props) {
+
+
+ class Game extends React.Component {
+    tour;
+    niveau = this.props;
+
+    constructor(props) {
       super(props);
       this.tour = "IA";
       this.state = {
-        seconds: 0,
-        tourDuJoueur: "IA",
-        Simon: {
+
+       seconds: 0,
+        gameOver : "false",
+        turn : "IA",
+        Simon : {
             bleu : {
                 style : 'TuileBleu'
             },
@@ -53,15 +59,15 @@ export default class Game extends React.Component {
    }
 
     startNewGame(){
-        sequenceIa = [];
-        sequencePlayer = [];
-        compteurTour = 0;
-        this.playIa();
-    }
+           sequenceIa = [];
+           sequencePlayer = [];
+           compteurTour = 0;
+           this.playIa();
+           console.log(this.niveau);
+       }
 
     // fonction qui gère les sons :
     async componentDidMount (){
-
           this.sound = {};
           this.sound.clickbleu = new Audio.Sound();
 
@@ -111,30 +117,40 @@ export default class Game extends React.Component {
           }, 1000)
      };
 
-    componentWillUnmount() {
+ componentWillUnmount() {
           clearInterval(this.myInterval)
     }
 
-    // boucle en dur qui joue une suite de couleur et state qui se réinitialise pour que les boutons ne restent pas opaques
-    async playIa() {
-    console.log("state = " + this.state.turn)
+//https://flaviocopes.com/javascript-sleep/
+
+// boucle en dur qui joue une suite de couleur et state qui se réinitialise pour que les boutons ne restent pas opaques
+     async playIa() {
+     console.log("state = " + this.state.turn)
+   //  if (this.state.turn == "IA") {
     if (this.tour == "IA") {
              var i;
-             // on rajoute un element random dans le tableau ici
-             var couleur = this.getRandomColor();
+             //this.selectionCouleur();
+             // on rajoute un element random dans le tableau
+             // ici
+           var couleur = this.getRandomColor();
+
              sequenceIa.push(couleur);
-             // Jouer les sons contenus du tableau
-             for(i = 0; i < sequenceIa.length ; i++){
-                 this.selectionCouleur(sequenceIa[i]);
-                 //https://flaviocopes.com/javascript-sleep/ :
+
+
+                // Jouer les sons contenus du tableau
+             for(i = 0; i< compteurTour+1 ; i++){
+                    this.selectionCouleur(sequenceIa[i]);
+
+
+
                  await sleep(700) // pause afin de laisser l'humain entendre le son et voir les boutons s'afficher
                  this.setState({...this.state, Simon: {...this.state.Simon, jaune: {...this.state.Simon.jaune, style: 'TuileJaune'}}});
                  this.setState({...this.state, Simon: {...this.state.Simon, bleu: {...this.state.Simon.bleu, style: 'TuileBleu'}}});
                  this.setState({...this.state, Simon: {...this.state.Simon, rouge: {...this.state.Simon.rouge, style: 'TuileRouge'}}});
                  this.setState({...this.state, Simon: {...this.state.Simon, vert: {...this.state.Simon.vert, style: 'TuileVert'}}});
          }
-             this.setState({...this.state, tourDuJoueur : "Player"})
-             this.setState({...this.state, seconds : 10})
+            this.setState({...this.state, turn : "Player"})
+            console.log("taille du IATab dans playIA: " + sequenceIa.length);
         }
      }
 
@@ -176,6 +192,11 @@ export default class Game extends React.Component {
           };
      }
 
+    gameOver = () => {
+        this.setState({...this.state, gameOver : "true"})
+
+    }
+
     // fonction activée lorsque le joueur appuie sur une tuile :
    async playPlayer(couleur) {
    console.log("tour du joueur = " + compteurTour)
@@ -184,90 +205,128 @@ export default class Game extends React.Component {
                 case "jaune":
                 if(couleur != sequenceIa[clickJoueur]){
                 this.sound.clickGameOver.replayAsync()
+                this.gameOver();
+                this.props.editManches(compteurTour);
                 } else{
                     this.sound.clickjaune.replayAsync()
-                    this.setState({...this.state, seconds : 10})
+                      this.setState({...this.state, seconds : 10})
                     clickJoueur++;
+                    if(clickJoueur == sequenceIa.length) {
+                    console.log("taille du IATab dans playPlayerJaune: " + sequenceIa.length);
+                       this.setState({...this.state, turn : "IA"})
+                       this.tour = "IA";
+                       compteurTour++;
+                     await  sleep(1000)
+                       clickJoueur = 0;
+                       this.playIa();
+
+                    }
                     }
                 break;
                 case "bleu":
                 if(couleur != sequenceIa[clickJoueur]){
                    this.sound.clickGameOver.replayAsync()
+                   this.gameOver();
+                   this.props.editManches(compteurTour);
                 } else{
                    this.sound.clickbleu.replayAsync()
-                   this.setState({...this.state, seconds : 10})
+                     this.setState({...this.state, seconds : 10})
                    clickJoueur++;
+                   if(clickJoueur == sequenceIa.length) {
+                   console.log("taille du IATab: " + sequenceIa.length);
+                       this.setState({...this.state, turn : "IA"})
+                       compteurTour++;
+                       this.tour = "IA";
+                      await sleep(1000)
+                        clickJoueur = 0;
+                       this.playIa();
+                   }
                 }
                 break;
                 case "rouge":
                 if(couleur != sequenceIa[clickJoueur]){
                     this.sound.clickGameOver.replayAsync()
+                    this.gameOver();
+                    this.props.editManches(compteurTour);
                 } else{
                     this.sound.clickrouge.replayAsync()
-                    this.setState({...this.state, seconds : 10})
+                      this.setState({...this.state, seconds : 10})
                     clickJoueur++;
+                    if(clickJoueur == sequenceIa.length) {
+                    console.log("taille du IATab: " + sequenceIa.length);
+                       this.setState({...this.state, turn : "IA"})
+                       compteurTour++;
+                       this.tour = "IA";
+                          await sleep(1000)
+                            clickJoueur = 0;
+                       this.playIa();
+                    }
                 }
                 break;
                 case "vert":
                 if(couleur != sequenceIa[clickJoueur]){
                    this.sound.clickGameOver.replayAsync()
+                   this.gameOver();
+                   this.props.editManches(compteurTour);
                 } else {
                     this.sound.clickvert.replayAsync()
-                    this.setState({...this.state, seconds : 10})
+                      this.setState({...this.state, seconds : 10})
                     clickJoueur++;
+                    if(clickJoueur == sequenceIa.length) {
+                    console.log("taille du IATab: " + sequenceIa.length);
+                       this.setState({...this.state, turn : "IA"})
+                       compteurTour++;
+                       this.tour = "IA";
+                          await sleep(1000)
+                          clickJoueur = 0;
+                       this.playIa();
+                    }
                 }
                 break;
           };
-
-          if(clickJoueur == sequenceIa.length) {
-          console.log("taille du IATab dans playPlayerJaune: " + sequenceIa.length);
-          this.setState({...this.state, tourDuJoueur : "IA"})
-             this.tour = "IA";
-             compteurTour++;
-           await  sleep(1000)
-             clickJoueur = 0;
-             this.playIa();
-          }
-
           console.log("reçu : " + couleur);
+
           console.log("attendu : " +sequenceIa[clickJoueur]);
           console.log("clique joueur : " + clickJoueur);
-          console.log("sequenceIa =" + sequenceIa);
 
-          // console.log("tableau joueur avant pop " +sequenceIa);
+
+         // console.log("tableau joueur avant pop " +sequenceIa);
           //j'enlève le premier élément du tableau : comme ça on a toujours le prochain élément à comparer à la même position
           // à faire il faut garder en mémoire le tableau de l'Ia pour le tour d'après, faire un deuxième tableau temporaire?
-          // console.log("tableau joueur après " +sequenceIa);
+         // console.log("tableau joueur après " +sequenceIa);
     };
 
+    //fonction timer
 
     render(){
     const {seconds} = this.state;
     var tourJoueur; // variable qui va stocker et afficher le tour du joueur (via une balise <text>)
-    if (this.state.tourDuJoueur == "Player"){ // affichage du contenu suivant si le state est similaire
-        tourJoueur = <Text style={styles.ATonTour}>A ton tour ! Temps restant : {seconds}</Text>
-    }
+    var gameOver;
+    if (this.tour == "Player"){ // affichage du contenu suivant si le state est similaire
 
+ tourJoueur = <Text style={styles.ATonTour}>A ton tour ! Temps restant : {seconds}</Text>    }
+    if(this.state.gameOver== "true"){
+    gameOver = <Text>Tu as perdu</Text>
+    }
          return (
            // (TouchableOpacity car une view est incompatible avec un onPress)
            <View style={styles.ContainerTuiles}>
 
                <View style={styles.RangeeTuiles}>
                      <Text style={styles.textPartie}>Séquences retenues : {compteurTour}</Text>
-                </View>
-               <View style={styles.RangeeTuiles}>
                      {tourJoueur}
+                     {gameOver}
                 </View>
 
                <View style={styles.RangeeTuiles}>
 
-                 <TouchableOpacity style={styles[this.state.Simon.bleu.style]} activeOpacity={0.5} onPress= {() =>this.playPlayer("bleu")}/>
-                 <TouchableOpacity  style={styles[this.state.Simon.vert.style]} activeOpacity={0.5} onPress= {() =>this.playPlayer("vert")}/>
+                 <TouchableOpacity style={styles[this.state.Simon.bleu.style]} activeOpacity={0.6} onPress= {() =>this.playPlayer("bleu")}/>
+                 <TouchableOpacity  style={styles[this.state.Simon.vert.style]} activeOpacity={0.6} onPress= {() =>this.playPlayer("vert")}/>
                </View>
 
                <View style={styles.RangeeTuiles}>
-                 <TouchableOpacity style={styles[this.state.Simon.rouge.style]} activeOpacity={0.5} onPress= {() =>this.playPlayer("rouge")}/>
-                 <TouchableOpacity style={styles[this.state.Simon.jaune.style]} activeOpacity={0.5} onPress= {() =>this.playPlayer("jaune")}/>
+                 <TouchableOpacity style={styles[this.state.Simon.rouge.style]} activeOpacity={0.6} onPress= {() =>this.playPlayer("rouge")}/>
+                 <TouchableOpacity style={styles[this.state.Simon.jaune.style]} activeOpacity={0.6} onPress= {() =>this.playPlayer("jaune")}/>
 
                </View>
 
@@ -287,7 +346,7 @@ export default class Game extends React.Component {
    const styles = StyleSheet.create({
          ContainerTuiles : {
              width: windowWidth/1.5,
-             height: windowHeight/1.5,
+             height: windowHeight/2,
              marginLeft: windowWidth/6,
              marginTop: 100,
          },
@@ -375,3 +434,23 @@ export default class Game extends React.Component {
                fontWeight: 'bold',
           }
  });
+
+
+const mapStateToProps = state => {
+    return {
+        niveau : state.niveau
+    };
+}
+// appeler edit manche uniquement si le score est dans les 10 premiers
+const mapDispatchToProps = dispatch => {
+    return {
+        editManches: manches => {
+            dispatch(editManches(manches))
+        }
+    };
+}
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(Game);
