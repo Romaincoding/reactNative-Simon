@@ -1,3 +1,4 @@
+import * as firebase from 'firebase';
 import {
   EDIT_PSEUDO,
    EDIT_NIVEAU,
@@ -5,6 +6,18 @@ import {
    SEND_SCORE
 } from './actions'
 
+const firebaseConfig = {
+  apiKey: "AIzaSyDyswacIXX8nxEu2WUM8p39GVFbZaI3mU4",
+  authDomain: "simon-s-game.firebaseapp.com",
+  databaseURL: "https://simon-s-game.firebaseio.com/",
+  projectId: "simon-s-game",
+  storageBucket: "simon-s-game.appspot.com",
+  messagingSenderId: "177031237782",
+  appId: "1:177031237782:web:0de6664a3464d14f7bb2b7",
+  measurementId: "G-44VPPT3VGY"
+};
+
+firebase.initializeApp(firebaseConfig);
 
 
 //firebase.database().ref('score').child('-M3MEWMtGK2rPWyuJPtX').remove();
@@ -118,31 +131,12 @@ let initialState = {
 //  Profil datas [{Object}]
 
 //  @param      {String}  {pseudo}
-<<<<<<< HEAD
+
     score:{
     facile:scoreTableFacile,
     intermediaire:scoreTableIntermediaire,
     difficile:scoreTableDifficile
     },
-=======
-    score: [ {
-
-        joueur:"Michel ",
-        scores: "3 "
-    },
-    {
-        joueur:"Romain ",
-        scores:"5 "
-    },
-    {
-        joueur:"Hugo ",
-        scores: "7 "
-    },
-    {
-        joueur:"Bertand ",
-        scores: "8 "
-    }],
->>>>>>> master
 
     // state.team
      team: [ {
@@ -167,29 +161,24 @@ let initialState = {
     profil: {
     pseudo:'',
     niveau:'',
+    }
+    }
 
 
+/*firebase.database().ref('score').push({
+    pseudo: 'test',
+    highscore: 1234
+});
 
+firebase.database().ref('score').push({
+    pseudo: 'lolo',
+    highscore: 14
+});
 
->>>>>>> master
-
-
-
- }
-
-		pseudo: 'test',
-		highscore: 1234
-	});
-
-	firebase.database().ref('score').push({
-    		pseudo: 'lolo',
-    		highscore: 14
-    	});
-
-    	firebase.database().ref('score').push({
-        		pseudo: 'tania',
-        		highscore: 4
-        	});*/
+firebase.database().ref('score').push({
+    pseudo: 'tania',
+    highscore: 4
+});*/
 
 
 export default function reducer(state = initialState, action) {
@@ -210,4 +199,4 @@ export default function reducer(state = initialState, action) {
         default:
             return state;
     }
-}
+    }

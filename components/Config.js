@@ -43,12 +43,8 @@ class Config extends React.Component {
 	}
 
 	render() {
-<<<<<<< HEAD
 		const { profil } = this.state;
-=======
 
-
->>>>>>> master
 		return (
 			<KeyboardAwareScrollView scrollEnabled={false}>
 				<SafeAreaView style={styles.view}>
