@@ -138,11 +138,11 @@ let initialState = {
 //  Profil datas [{Object}]
 
 //  @param      {String}  {pseudo}
-    score:[
-    {scoreTableFacile},
-    {scoreTableIntermediaire},
-    {scoreTableDifficile}
-    ],
+    score:{
+    facile:scoreTableFacile,
+    intermediaire:scoreTableIntermediaire,
+    difficile:scoreTableDifficile
+    },
 
     // state.team
  	team: [ {
