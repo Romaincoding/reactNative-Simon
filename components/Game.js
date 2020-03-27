@@ -27,21 +27,21 @@ const sleep = (milliseconds) => {
   return new Promise(resolve => setTimeout(resolve, milliseconds))
 }
 
-
-
-
  class Game extends React.Component {
 
+    // démarrer le timer au premier tour du joueur.
+    // il faut que le timer  démarre lorsque l'ia a fini de jouer sa séquence ET jouer le son "clickJouer".
+    // récupérer le props.profile.niveau dans la fonction setLevel().
 
 
     constructor(props) {
-      super(props);
-      this.tour = "IA";
-      this.currentAiIndex = 0;
-      this.settingsTimer;
-      this.state = {
+        super(props);
+        this.tour = "IA";
+        this.currentAiIndex = 0;
+        this.settingsTimer;
+        this.state = {
 
-       seconds: 0,
+        seconds: null,
         gameOver : "false",
         turn : "IA",
         profil : {
@@ -64,8 +64,6 @@ const sleep = (milliseconds) => {
         },
       }
    }
-
-
 
     startNewGame(){
 
@@ -140,9 +138,11 @@ const sleep = (milliseconds) => {
           this.myInterval = setInterval(() => {
               const {seconds} = this.state;
               if (seconds > 0) {
-                  this.setState(({ seconds }) => ({
+                   this.setState(({ seconds }) => ({
                       seconds: seconds - 1
                   }))
+              } if (seconds == 0) {
+                   this.gameOver();
               }
           }, 1000)
      };
@@ -151,16 +151,21 @@ const sleep = (milliseconds) => {
           clearInterval(this.myInterval)
     }
 
-traitement=()=> {
+    traitement=()=> {
              console.log("traitement : ", this.currentAiIndex);
              console.log("traitetement i : ", typeof this.currentAiIndex);
              this.selectionCouleur(sequenceIa[this.currentAiIndex]);
              let i = this.currentAiIndex;
              setTimeout(()=> {
                 console.log("i dans settimeout ", i);
-                this.suiteTraitement(i)}, this.settingsTimer) //Attendez 3 secondes avant de continuer dans la fonction suivante
-
+                this.suiteTraitement(i)}, this.settingsTimer)
              }
+
+/*    displayInfosPlayer=()=> {
+             setTimeout(()=> {
+                this.tour = "Player"}, (this.settingsTimer))
+             }*/
+
 
     suiteTraitement=(i)=> {
     console.log("suiteTraitement : ", i);
@@ -176,12 +181,13 @@ traitement=()=> {
                  } else {
                  console.log("i+1")
                  this.currentAiIndex = i+1;
-                 setTimeout(()=> { this.traitement()}, 300);
+                 setTimeout(()=> {this.traitement()}, 300);
                  }
     }
 
 // boucle en dur qui joue une suite de couleur et state qui se réinitialise pour que les boutons ne restent pas opaques
     playIa=()=> {
+    this.setState({...this.state, seconds : null})
     if (this.tour == "IA") {
              // on rajoute un element random dans le tableau ici
              var couleur = this.getRandomColor();
@@ -231,8 +237,7 @@ traitement=()=> {
      }
 
     gameOver = () => {
-        this.setState({...this.state, gameOver : "true"})
-
+        this.setState({...this.state, gameOver : "true"});
     }
 
     // fonction activée lorsque le joueur appuie sur une tuile :
@@ -249,6 +254,7 @@ traitement=()=> {
 
                 } else{
                     this.sound.clickjaune.replayAsync()
+                    this.tour = "Player";
                       this.setState({...this.state, seconds : 10})
                     clickJoueur++;
                     if(clickJoueur == sequenceIa.length) {
@@ -259,7 +265,6 @@ traitement=()=> {
                      await  sleep(1000)
                        clickJoueur = 0;
                        this.playIa();
-
                     }
                     }
                 break;
@@ -324,6 +329,7 @@ traitement=()=> {
                 }
                 break;
           };
+
           console.log("reçu : " + couleur);
 
           console.log("attendu : " +sequenceIa[clickJoueur]);
@@ -342,30 +348,30 @@ traitement=()=> {
 
     const {profil} = this.props;
     const {seconds} = this.state;
-    var tourJoueur; // variable qui va stocker et afficher le tour du joueur (via une balise <text>)
     var gameOver;
+    //var tourJoueur; // variable qui va stocker et afficher le tour du joueur (via une balise <text>)
 
+/*    if (this.tour == "Player"){ // affichage du contenu suivant si le state est similaire
+        tourJoueur = <Text style={styles.ATonTour}>A ton tour ! </Text>
+    }*/
 
-
-    if (this.tour == "Player"){ // affichage du contenu suivant si le state est similaire
-
- tourJoueur = <Text style={styles.ATonTour}>A ton tour ! Temps restant : {seconds}</Text>    }
-    if(this.state.gameOver== "true"){
-    gameOver = <Text>Tu as perdu</Text>
+    if (this.state.gameOver== "true"){
+        gameOver = <Text>Tu as perdu</Text>
+    } if (this.state.seconds == 0) {
+        gameOver = <Text>Le temps est écoulé, tu as perdu !</Text>
     }
     else{
-
-    gameOver = <Text></Text>
+        gameOver = <Text></Text>
     }
          return (
            // (TouchableOpacity car une view est incompatible avec un onPress)
            <View style={styles.ContainerTuiles}>
 
-               <View style={styles.RangeeTuiles}>
+               <View style={styles.TextInfos}>
                      <Text style={styles.textPartie}>Séquences retenues : {compteurTour}</Text>
-                     {tourJoueur}
+                     <Text>Niveau : {profil.niveau}</Text>
+                     <Text>Temps restant : {seconds}</Text>
                      {gameOver}
-                        <Text>{profil.niveau}</Text>
                 </View>
 
                <View style={styles.RangeeTuiles}>
@@ -400,6 +406,12 @@ traitement=()=> {
              marginLeft: windowWidth/6,
              marginTop: 100,
          },
+         TextInfos : {
+             flex: 1,
+             flexDirection: 'column',
+             justifyContent: 'center',
+             alignItems: 'center'
+                  },
          RangeeTuiles : {
              flex: 1,
              flexDirection: 'row',
