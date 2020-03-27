@@ -1,25 +1,10 @@
-/*import { reduxFirestore, firestoreReducer } from 'redux-firestore';
-import firebase from 'firebase/app';
-import 'firebase/auth';
-import 'firebase/database';
-import 'firebase/firestore';*/
-import firebase from 'firebase'
-import '@firebase/firestore';
-
 import {
-  EDIT_PROFIL
+  EDIT_PSEUDO,
+   EDIT_NIVEAU,
+  // EDIT_MANCHES,
+   SEND_SCORE
 } from './actions'
 
-const firebaseConfig = {
-    apiKey: "AIzaSyDyswacIXX8nxEu2WUM8p39GVFbZaI3mU4",
-    authDomain: "simon-s-game.firebaseapp.com",
-    databaseURL: "https://simon-s-game.firebaseio.com",
-    projectId: "simon-s-game",
-    storageBucket: "simon-s-game.appspot.com",
-    messagingSenderId: "177031237782",
-    appId: "1:177031237782:web:91d5d46745e145b97bb2b7",
-    measurementId: "G-L36T2JKL4R"
-  };
 
 firebase.initializeApp(firebaseConfig);
 
@@ -145,38 +130,62 @@ let initialState = {
     },
 
     // state.team
- 	team: [ {
- 		prenom: 'Romain ',
- 		age: '35ans'
- 	},
- 	{
- 	    prenom: 'Boris ',
-     	age: '37ans'
- 	},
- 	{
-     	prenom: 'Hugo ',
-        age: '37ans'
+     team: [ {
+         prenom: 'Romain ',
+
+     },
+     {
+         prenom: 'Boris ',
+
+     },
+     {
+         prenom: 'Hugo ',
+
     },
     {
         prenom: 'Teddy ',
-        age: '37ans'
+
 
     }],
 
     // state.profil
     profil: {
-    pseudo:'Mon pseudo'
-    }
+    pseudo:'',
+    niveau:'',
 
  }
 
+		pseudo: 'test',
+		highscore: 1234
+	});
+
+	firebase.database().ref('score').push({
+    		pseudo: 'lolo',
+    		highscore: 14
+    	});
+
+    	firebase.database().ref('score').push({
+        		pseudo: 'tania',
+        		highscore: 4
+        	});*/
+
+
 export default function reducer(state = initialState, action) {
-	switch (action.type) {
+    switch (action.type) {
 
-		case EDIT_PROFIL:
-			return { ...state, profil: action.profil };
+        case EDIT_PSEUDO:
+            return { ...state, profil: {...state.profil, pseudo: action.pseudo }};
 
-		default:
-			return state;
-	}
+        case EDIT_NIVEAU:
+                    return { ...state, profil: {...state.profil, niveau: action.niveau }};
+
+        /*case EDIT_MANCHES:
+                    return { ...state, manches: action.manches};
+*/
+        case SEND_SCORE:
+                    //envoi du score a firebase
+                    return state;
+        default:
+            return state;
+    }
 }
