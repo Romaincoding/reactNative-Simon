@@ -36,6 +36,7 @@ const sleep = (milliseconds) => {
     constructor(props) {
       super(props);
       this.tour = "IA";
+      this.currentAiIndex = 0;
       this.state = {
 
        seconds: 0,
@@ -62,9 +63,9 @@ const sleep = (milliseconds) => {
            sequenceIa = [];
            sequencePlayer = [];
            compteurTour = 0;
+           this.currentAiIndex = 0;
            this.playIa();
-           console.log(this.niveau);
-       }
+           console.log(this.niveau);}
 
     // fonction qui gère les sons :
     async componentDidMount (){
@@ -121,36 +122,44 @@ const sleep = (milliseconds) => {
           clearInterval(this.myInterval)
     }
 
-//https://flaviocopes.com/javascript-sleep/
+traitement=()=> {
+             console.log("traitement : ", this.currentAiIndex);
+             console.log("traitetement i : ", typeof this.currentAiIndex);
+             this.selectionCouleur(sequenceIa[this.currentAiIndex]);
+             let i = this.currentAiIndex;
+             setTimeout(()=> {
+                console.log("i dans settimeout ", i);
+                this.suiteTraitement(i)}, 3000) //Attendez 3 secondes avant de continuer dans la fonction suivante
+
+             }
+
+    suiteTraitement=(i)=> {
+    console.log("suiteTraitement : ", i);
+             this.setState({...this.state, Simon: {...this.state.Simon, jaune: {...this.state.Simon.jaune, style: 'TuileJaune'}}});
+             this.setState({...this.state, Simon: {...this.state.Simon, bleu: {...this.state.Simon.bleu, style: 'TuileBleu'}}});
+             this.setState({...this.state, Simon: {...this.state.Simon, rouge: {...this.state.Simon.rouge, style: 'TuileRouge'}}});
+             this.setState({...this.state, Simon: {...this.state.Simon, vert: {...this.state.Simon.vert, style: 'TuileVert'}}});
+            console.log("sequenIA length", sequenceIa.length);
+             if (i+1 >= sequenceIa.length) {
+                 this.setState({...this.state, tourDuJoueur : "Player"})
+                 this.currentAiIndex = 0;
+                 console.log("tour du joueur ")
+                 } else {
+                 console.log("i+1")
+                 this.currentAiIndex = i+1;
+                 setTimeout(()=> { this.traitement()}, 300);
+                 }
+    }
 
 // boucle en dur qui joue une suite de couleur et state qui se réinitialise pour que les boutons ne restent pas opaques
-     async playIa() {
-     console.log("state = " + this.state.turn)
-   //  if (this.state.turn == "IA") {
+    playIa=()=> {
     if (this.tour == "IA") {
-             var i;
-             //this.selectionCouleur();
-             // on rajoute un element random dans le tableau
-             // ici
-           var couleur = this.getRandomColor();
-
+             // on rajoute un element random dans le tableau ici
+             var couleur = this.getRandomColor();
              sequenceIa.push(couleur);
-
-
-                // Jouer les sons contenus du tableau
-             for(i = 0; i< compteurTour+1 ; i++){
-                    this.selectionCouleur(sequenceIa[i]);
-
-
-
-                 await sleep(700) // pause afin de laisser l'humain entendre le son et voir les boutons s'afficher
-                 this.setState({...this.state, Simon: {...this.state.Simon, jaune: {...this.state.Simon.jaune, style: 'TuileJaune'}}});
-                 this.setState({...this.state, Simon: {...this.state.Simon, bleu: {...this.state.Simon.bleu, style: 'TuileBleu'}}});
-                 this.setState({...this.state, Simon: {...this.state.Simon, rouge: {...this.state.Simon.rouge, style: 'TuileRouge'}}});
-                 this.setState({...this.state, Simon: {...this.state.Simon, vert: {...this.state.Simon.vert, style: 'TuileVert'}}});
-         }
-            this.setState({...this.state, turn : "Player"})
-            console.log("taille du IATab dans playIA: " + sequenceIa.length);
+                        console.log("sequenceIa =" + sequenceIa);
+             // Jouer les sons contenus du tableau
+             this.traitement();
         }
      }
 
