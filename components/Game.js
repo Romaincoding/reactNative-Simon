@@ -66,6 +66,12 @@ const sleep = (milliseconds) => {
    }
 
     startNewGame(){
+      
+      // La ligne du dessous lance un timer qui expira dans 5 sec et affichera son log à ce moment là.
+      // cet appel n'est pas bloquant, on passe à la ligne 75 direct
+      setTimeout(() => {
+        console.log("5 secondes sont passées")
+        }, 5000);
 
     switch("Facile"){
 
