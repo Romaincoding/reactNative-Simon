@@ -63,12 +63,17 @@ const initialState = {
  }
 firebase.database().ref('score').child('-M3MEWMtGK2rPWyuJPtX').remove();
 var result;
-
+//créer un tableau d'objets à 2 dimmensions
+var scoreTable = new Array();
 firebase.database().ref('score').on("value", function(snapshot) {
-result = snapshot.val();
-for (let key of Object.keys(result)) {
-result[key].pseudo;
+    result = snapshot.val();
+    for (let key of Object.keys(result)) {
+        let nickname= result[key].pseudo;
+        let points= result[key].highscore;
+        console.log( "from fb.db: " + nickname + ", " + points )
+        scoreTable.push([nickname,points]);
     }
+    console.log(scoreTable);
 });
 /*firebase.database().ref('score').push({
 
