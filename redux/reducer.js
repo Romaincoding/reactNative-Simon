@@ -1,7 +1,8 @@
 import {
-  EDIT_PROFIL,
+  EDIT_PSEUDO,
    EDIT_NIVEAU,
-   EDIT_MANCHES
+  // EDIT_MANCHES,
+   SEND_SCORE
 } from './actions'
 
 
@@ -49,12 +50,14 @@ const initialState = {
 
     // state.profil
     profil: {
-    pseudo:'Mon pseudo'
-    },
+    pseudo:'',
+    niveau:'',
 
-    niveau: "Facile",
+    }
 
-    manche: "0"
+
+
+
 
 
 
@@ -64,16 +67,18 @@ const initialState = {
 export default function reducer(state = initialState, action) {
     switch (action.type) {
 
-        case EDIT_PROFIL:
-            return { ...state, profil: action.profil };
+        case EDIT_PSEUDO:
+            return { ...state, profil: {...state.profil, pseudo: action.pseudo }};
 
         case EDIT_NIVEAU:
-                    return { ...state, niveau: action.niveau };
+                    return { ...state, profil: {...state.profil, niveau: action.niveau }};
 
-        case EDIT_MANCHES:
+        /*case EDIT_MANCHES:
                     return { ...state, manches: action.manches};
-
-
+*/
+        case SEND_SCORE:
+                    //envoi du score a firebase
+                    return state;
         default:
             return state;
     }

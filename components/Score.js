@@ -9,14 +9,14 @@ class Score extends React.Component {
     render() {
 
     // cette partie affiche le pseudo et les scores associés. Faut il suppimer les noms des joueurs ?
-    const { profil, score, niveau, manches } = this.props;
+    const { profil, score, niveau} = this.props;
 
             return (
                 <SafeAreaView style ={styles.score}>
                     <Text >{profil.pseudo}</Text>
                     <Text >{niveau}</Text>
                     <Text>Mes scores : {this.props.score.map(y => y.scores ) }</Text>
-                    <Text >{manches}</Text>
+
                 </SafeAreaView>
             );
         }
@@ -27,7 +27,10 @@ const mapStateToProps = state => {
         score: state.score,
         profil : state.profil,
         niveau: state.niveau,
-        manches: state.manches
+      //  manches: state.manches
+      /*game : state.pseudo,
+      game : state.niveau,
+      game : state.manches*/
      };
  }
 

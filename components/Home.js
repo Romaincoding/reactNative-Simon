@@ -26,7 +26,7 @@ class Home extends React.Component {
 const mapStateToProps = state => {
 	return {
 	    //à gauche je nomme comme je veux c'est mon props! A droite c'est ce que je stocke dans mon state global
-		profil: state.profil,
+		profil: state.profil
 
 
 	};

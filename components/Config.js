@@ -6,13 +6,17 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import styles from '../assets/styles';
 
 import { connect } from "react-redux";
-import { editProfil, editNiveau } from "../redux/actions";
+import { editPseudo, editNiveau } from "../redux/actions";
 
 class Config extends React.Component {
 	constructor(props) {
 		super(props)
 		this.state = {
-			profil: {}
+			profil: {
+			pseudo: '',
+			niveau:''
+
+			}
 
 		}
 	}
@@ -34,12 +38,13 @@ class Config extends React.Component {
 	// Fonction utilisée lors du clic du boutton
 	_onPress() {
 		// Utilise la liaison du mapDispatchToProps
-		this.props.editProfil(this.state.profil);
+		this.props.editPseudo(this.state.profil.pseudo);
 
 	}
 
 	render() {
-		//const { profil } = this.props;
+
+
 		return (
 			<KeyboardAwareScrollView scrollEnabled={false}>
 				<SafeAreaView style={styles.view}>
@@ -53,19 +58,19 @@ class Config extends React.Component {
 			        	onChangeText={(pseudo) => this._onChangePseudo(pseudo)}
 		        	/>
                         <View>
-                         <TouchableOpacity activeOpacity={0.6} style={styles.BoutonJouer} onPress= {() =>this.getLevel("Facile")}>
+                        <Text>niveau:{this.props.profil.niveau}</Text>
+                         <TouchableOpacity activeOpacity={0.6} style={styles.BoutonJouer} onPress= {(niveau) =>this.getLevel("Facile")}>
 
                           <Text style={styles.textBouton}>Facile</Text>
                            </TouchableOpacity>
                             </View>
                             <View>
-                                                              <TouchableOpacity activeOpacity={0.6} style={styles.BoutonJouer} onPress= {() =>this.getLevel("Normal")}>
-
-                                                                  <Text style={styles.textBouton}>Normal</Text>
-                                                                  </TouchableOpacity>
-                                                                                </View>
-                                            <View>
-                                                                                 <TouchableOpacity activeOpacity={0.6} style={styles.BoutonJouer} onPress= {() =>this.getLevel("Diffcile")}>
+                            <TouchableOpacity activeOpacity={0.6} style={styles.BoutonJouer} onPress= {(niveau) =>this.getLevel("Normal")}>
+                            <Text style={styles.textBouton}>Normal</Text>
+                            </TouchableOpacity>
+                            </View>
+                            <View>
+                                            <TouchableOpacity activeOpacity={0.6} style={styles.BoutonJouer} onPress= {(niveau) =>this.getLevel("Diffcile")}>
 
                                                                                      <Text style={styles.textBouton}>Difficile</Text>
                                                                                  </TouchableOpacity>
@@ -91,8 +96,8 @@ const mapStateToProps = state => {
 // Lie l'action editProfil à la class Config
 const mapDispatchToProps = dispatch => {
 	return {
-		editProfil: profil => {
-			dispatch(editProfil(profil))
+		editPseudo: pseudo => {
+			dispatch(editPseudo(pseudo))
 
 		},
 		editNiveau: niveau => {

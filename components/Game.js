@@ -4,7 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { connect } from 'react-redux';
 import { Audio } from 'expo-av';
 import {Dimensions} from 'react-native';
-import {editManches} from '../redux/actions';
+import {sendScore} from '../redux/actions';
 // dimensions du screen du device :
 const windowWidth = Dimensions.get('screen').width;
 const windowHeight = Dimensions.get('screen').height;
@@ -30,8 +30,7 @@ const sleep = (milliseconds) => {
 
 
  class Game extends React.Component {
-    tour;
-    niveau = this.props;
+
 
     constructor(props) {
       super(props);
@@ -63,7 +62,7 @@ const sleep = (milliseconds) => {
            sequencePlayer = [];
            compteurTour = 0;
            this.playIa();
-           console.log(this.niveau);
+           console.log(this.props.profil.niveau);
        }
 
     // fonction qui gère les sons :
@@ -206,7 +205,9 @@ const sleep = (milliseconds) => {
                 if(couleur != sequenceIa[clickJoueur]){
                 this.sound.clickGameOver.replayAsync()
                 this.gameOver();
-                this.props.editManches(compteurTour);
+                this.props.sendScore(compteurTour);
+                console.log("le compteur est a " + compteurTour);
+
                 } else{
                     this.sound.clickjaune.replayAsync()
                       this.setState({...this.state, seconds : 10})
@@ -227,7 +228,7 @@ const sleep = (milliseconds) => {
                 if(couleur != sequenceIa[clickJoueur]){
                    this.sound.clickGameOver.replayAsync()
                    this.gameOver();
-                   this.props.editManches(compteurTour);
+                   this.props.sendScore(compteurTour);
                 } else{
                    this.sound.clickbleu.replayAsync()
                      this.setState({...this.state, seconds : 10})
@@ -247,7 +248,7 @@ const sleep = (milliseconds) => {
                 if(couleur != sequenceIa[clickJoueur]){
                     this.sound.clickGameOver.replayAsync()
                     this.gameOver();
-                    this.props.editManches(compteurTour);
+                    this.props.sendScore(compteurTour);
                 } else{
                     this.sound.clickrouge.replayAsync()
                       this.setState({...this.state, seconds : 10})
@@ -267,7 +268,7 @@ const sleep = (milliseconds) => {
                 if(couleur != sequenceIa[clickJoueur]){
                    this.sound.clickGameOver.replayAsync()
                    this.gameOver();
-                   this.props.editManches(compteurTour);
+                   this.props.sendScore(compteurTour);
                 } else {
                     this.sound.clickvert.replayAsync()
                       this.setState({...this.state, seconds : 10})
@@ -438,14 +439,14 @@ const sleep = (milliseconds) => {
 
 const mapStateToProps = state => {
     return {
-        niveau : state.niveau
+        profil : state.profil
     };
 }
 // appeler edit manche uniquement si le score est dans les 10 premiers
 const mapDispatchToProps = dispatch => {
     return {
-        editManches: manches => {
-            dispatch(editManches(manches))
+        sendScore: score => {
+            dispatch(sendScore(score))
         }
     };
 }
