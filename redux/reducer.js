@@ -160,7 +160,8 @@ let initialState = {
     // state.profil
     profil: {
     pseudo:'',
-    niveau:'',
+    niveau:'Facile',
+
     }
     }
 

@@ -19,6 +19,7 @@ var compteurTour = 0;
 console.log(compteurTour);
 var clickJoueur = 0;
 
+
 console.log(couleurTab);
 console.log(sequenceIa);
 
@@ -32,15 +33,20 @@ const sleep = (milliseconds) => {
  class Game extends React.Component {
 
 
+
     constructor(props) {
       super(props);
       this.tour = "IA";
       this.currentAiIndex = 0;
+      this.settingsTimer;
       this.state = {
 
        seconds: 0,
         gameOver : "false",
         turn : "IA",
+        profil : {
+            niveau : 'Facile'
+        },
         Simon : {
             bleu : {
                 style : 'TuileBleu'
@@ -54,17 +60,40 @@ const sleep = (milliseconds) => {
             vert : {
                 style : 'TuileVert'
             }
+
         },
       }
    }
 
+
+
     startNewGame(){
+
+    switch("Facile"){
+
+        case "Facile" :
+            this.settingsTimer = 1000;
+            break;
+
+        case "Normal" :
+            this.settingsTimer = 3000;
+            break;
+
+        case "Difficile" :
+            this.settingsTimer = 1000;
+            break;
+
+    }
+           this.setState({...this.state, gameOver : "false"});
            sequenceIa = [];
            sequencePlayer = [];
            compteurTour = 0;
            this.currentAiIndex = 0;
            this.playIa();
            console.log(this.props.profil.niveau);
+
+
+
        }
 
     // fonction qui gère les sons :
@@ -129,7 +158,7 @@ traitement=()=> {
              let i = this.currentAiIndex;
              setTimeout(()=> {
                 console.log("i dans settimeout ", i);
-                this.suiteTraitement(i)}, 3000) //Attendez 3 secondes avant de continuer dans la fonction suivante
+                this.suiteTraitement(i)}, this.settingsTimer) //Attendez 3 secondes avant de continuer dans la fonction suivante
 
              }
 
@@ -310,14 +339,23 @@ traitement=()=> {
     //fonction timer
 
     render(){
+
+    const {profil} = this.props;
     const {seconds} = this.state;
     var tourJoueur; // variable qui va stocker et afficher le tour du joueur (via une balise <text>)
     var gameOver;
+
+
+
     if (this.tour == "Player"){ // affichage du contenu suivant si le state est similaire
 
  tourJoueur = <Text style={styles.ATonTour}>A ton tour ! Temps restant : {seconds}</Text>    }
     if(this.state.gameOver== "true"){
     gameOver = <Text>Tu as perdu</Text>
+    }
+    else{
+
+    gameOver = <Text></Text>
     }
          return (
            // (TouchableOpacity car une view est incompatible avec un onPress)
@@ -327,6 +365,7 @@ traitement=()=> {
                      <Text style={styles.textPartie}>Séquences retenues : {compteurTour}</Text>
                      {tourJoueur}
                      {gameOver}
+                        <Text>{profil.niveau}</Text>
                 </View>
 
                <View style={styles.RangeeTuiles}>
