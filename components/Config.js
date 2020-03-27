@@ -12,7 +12,7 @@ class Config extends React.Component {
 	constructor(props) {
 		super(props)
 		this.state = {
-			profil: {}
+			profil: {pseudo:''}
 		}
 	}
 
@@ -33,7 +33,7 @@ class Config extends React.Component {
 	}
 
 	render() {
-		//const { profil } = this.props;
+		const { profil } = this.state;
 		return (
 			<KeyboardAwareScrollView scrollEnabled={false}>
 				<SafeAreaView style={styles.view}>
@@ -42,7 +42,7 @@ class Config extends React.Component {
 						style={styles.input}
 			        	placeholder='Pseudo'
 			        	maxLength={20}
-			        	value={this.state.profil.pseudo}
+			        	value={profil.pseudo}
 			        	onChangeText={(pseudo) => this._onChangePseudo(pseudo)}
 		        	/>
 		        	<TouchableOpacity style={styles.button} onPress={() => this._onPress()}>

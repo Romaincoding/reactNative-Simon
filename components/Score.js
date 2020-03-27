@@ -8,14 +8,13 @@ class Score extends React.Component {
 
     render() {
 
-    // cette partie affiche le pseudo et les scores associés. Faut il suppimer les noms des joueurs ?
-    const { profil } = this.props;
+    // cette partie affiche le pseudo et les scores associés. Faut il supprimer les noms des joueurs ?
+    const { score } = this.props;
+
 
             return (
                 <SafeAreaView style ={styles.score}>
-                    <Text >{profil.pseudo}</Text>
-                    <Text>Mes scores : {this.props.score.map(y => y.scores ) }</Text>
-
+                    <Text>Mes scores : {this.props.score.map(y =>"\n" + y.scoreTableFacile + "\n" + y.scoreTableIntermediaire + "\n"  + y.scoreTableDifficile)}</Text>
                 </SafeAreaView>
             );
         }
@@ -23,20 +22,10 @@ class Score extends React.Component {
 
 const mapStateToProps = state => {
     return {
-        score: state.score,
-        profil : state.profil
-    };
-}
-
-const mapDispatchToProps = dispatch => {
-    return {
-        editProfil: profil => {
-            dispatch(editProfil(profil))
-        }
+        score: state.score
     };
 }
 
 export default connect(
-    mapStateToProps,
-    mapDispatchToProps
+    mapStateToProps
 )(Score);
