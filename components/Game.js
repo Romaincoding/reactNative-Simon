@@ -20,6 +20,7 @@ console.log(compteurTour);
 var clickJoueur = 0;
 var echec = "echec";
 var temps = "temps";
+var texteJouer = "Jouer";
 
 console.log(couleurTab);
 console.log(sequenceIa);
@@ -30,8 +31,12 @@ const sleep = (milliseconds) => {
 
  class Game extends React.Component {
 
-    // démarrer le timer au premier tour du joueur.
-    // il faut que le timer  démarre lorsque l'ia a fini de jouer sa séquence ET jouer le son "clickJouer".
+    // PROBLEMES EN COURS ==>
+    // Un clearInterval est utilisé pour freezer le timer quand on perd MAIS pas moyen de le reseter quand on rejoue
+    // Pas moyen du coup également d'utiliser deux setState dans le même bloc (soit l'un soit l'autre mais pas les deux)
+    // Du coup les lignes 98/99 ne fonctionnent pas pour enlever tous les messages lorsque l'on rejoue
+
+    // Ivann: J'ai créé un seule fonction gameOver lorsqu'on perd ou que le temps est écoulé : je lui passe juste deux paramères différents (voir les variables temps et échec)
 
 
 
@@ -46,6 +51,7 @@ const sleep = (milliseconds) => {
         seconds: null,
         gameOver : "false",
         timeLeft : "false",
+        resetAllStates : "false",
         turn : "IA",
         profil : {
             niveau : ''
@@ -69,13 +75,12 @@ const sleep = (milliseconds) => {
    }
 
     startNewGame(){
-      
+
       // La ligne du dessous lance un timer qui expira dans 5 sec et affichera son log à ce moment là.
       // cet appel n'est pas bloquant, on passe à la ligne 75 direct
       setTimeout(() => {
         console.log("5 secondes sont passées")
         }, 5000);
-
     switch(this.props.profil.niveau){
 
         case "Facile" :
@@ -93,13 +98,15 @@ const sleep = (milliseconds) => {
             break;
 
     }
-    this.setState({...this.state, seconds : this.settingsTimer })
-        this.setState({...this.state, gameOver : "false"});
+        this.setState({...this.state, seconds : this.settingsTimer })
+/*        this.setState({...this.state, resetAllStates : "true"});
+        console.log("resetStates", this.state.resetAllStates);*/
         this.playIa();
         console.log(this.props.profil.niveau);
      }
 
     gameOver = (info) => {
+    texteJouer = "Rejouer";
     if (info == "echec") {
             this.setState({...this.state, gameOver : "true"});
             clearInterval(this.myInterval);
@@ -164,43 +171,35 @@ const sleep = (milliseconds) => {
             console.log('errorSound', error);
           }
 
-          this.timer();
+            this.myInterval = setInterval(() => {
+                const {seconds} = this.state;
+                if (seconds > 0) {
+                     this.setState(({ seconds }) => ({
+                        seconds: seconds - 1
+                    }))
+                } if (seconds == 0) {
+                     this.gameOver(temps);
+                }
+            }, 1000)
      };
 
  componentWillUnmount() {
           clearInterval(this.myInterval)
     }
 
-timer=()=> {
-          this.myInterval = setInterval(() => {
-              const {seconds} = this.state;
-              if (seconds > 0) {
-                   this.setState(({ seconds }) => ({
-                      seconds: seconds - 1
-                  }))
-              } if (seconds == 0) {
-                   this.gameOver(temps);
-              }
-          }, 1000)
-}
-    traitement=()=> {
-             console.log("traitement : ", this.currentAiIndex);
-             console.log("traitement i : ", typeof this.currentAiIndex);
+    boucleIAPart1=()=> {
+             console.log("boucleIAPart1 : ", this.currentAiIndex);
+             console.log("boucleIAPart1 i : ", typeof this.currentAiIndex);
              this.playIaSound(sequenceIa[this.currentAiIndex]);
              let i = this.currentAiIndex;
              setTimeout(()=> {
                 console.log("i dans settimeout ", i);
-                this.suiteTraitement(i)},this.timeBetweenNote)
+                this.boucleIAPart2(i)},this.timeBetweenNote)
              }
 
-/*    displayInfosPlayer=()=> {
-             setTimeout(()=> {
-                this.tour = "Player"}, (this.settingsTimer))
-             }*/
 
-
-    suiteTraitement=(i)=> {
-    console.log("suiteTraitement : ", i);
+    boucleIAPart2=(i)=> {
+    console.log("boucleIAPart2 : ", i);
              this.setState({...this.state, Simon: {...this.state.Simon, jaune: {...this.state.Simon.jaune, style: 'TuileJaune'}}});
              this.setState({...this.state, Simon: {...this.state.Simon, bleu: {...this.state.Simon.bleu, style: 'TuileBleu'}}});
              this.setState({...this.state, Simon: {...this.state.Simon, rouge: {...this.state.Simon.rouge, style: 'TuileRouge'}}});
@@ -215,7 +214,7 @@ timer=()=> {
                  } else {
                  console.log("i+1")
                  this.currentAiIndex = i+1;
-                 setTimeout(()=> {this.traitement()}, 300);
+                 setTimeout(()=> {this.boucleIAPart1()}, 300);
                  }
     }
 
@@ -228,7 +227,7 @@ timer=()=> {
              sequenceIa.push(couleur);
                         console.log("sequenceIa =" + sequenceIa);
              // Jouer les sons contenus du tableau
-             this.traitement();
+             this.boucleIAPart1();
              //this.setState({ ...this.state, seconds: 10 })
 
         }
@@ -406,17 +405,24 @@ timer=()=> {
         tourJoueur = <Text style={styles.ATonTour}>A ton tour ! </Text>
     }*/
 
-    if (this.state.gameOver== "true"){
+    if (this.state.gameOver == "true"){
         gameOver = <Text>Tu as perdu</Text>
     } else{
         gameOver = <Text></Text>
     }
 
-    if (this.state.timeLeft== "true"){
+
+    if (this.state.timeLeft == "true"){
         timeLeft = <Text>Le temps est écoulé, tu as perdu !</Text>
     } else{
         timeLeft = <Text></Text>
     }
+
+    if (this.state.resetAllStates == "true"){
+        timeLeft = <Text></Text>
+        gameOver = <Text></Text>
+    }
+
          return (
            // (TouchableOpacity car une view est incompatible avec un onPress)
            <View style={styles.ContainerTuiles}>
@@ -444,7 +450,7 @@ timer=()=> {
                <View style={styles.RangeeTuiles}>
                  <TouchableOpacity activeOpacity={0.6} style={styles.BoutonJouer} onPress= {() =>this.startNewGame()}>
 
-                     <Text style={styles.textBouton}>Jouer</Text>
+                     <Text style={styles.textBouton}>{texteJouer}</Text>
                  </TouchableOpacity>
                 </View>
 
