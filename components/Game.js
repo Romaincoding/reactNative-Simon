@@ -31,7 +31,7 @@ const sleep = (milliseconds) => {
 
     // démarrer le timer au premier tour du joueur.
     // il faut que le timer  démarre lorsque l'ia a fini de jouer sa séquence ET jouer le son "clickJouer".
-    // récupérer le props.profile.niveau dans la fonction setLevel().
+
 
 
     constructor(props) {
@@ -39,6 +39,7 @@ const sleep = (milliseconds) => {
         this.tour = "IA";
         this.currentAiIndex = 0;
         this.settingsTimer;
+        this.timeBetweenNote = 750;
         this.state = {
 
         seconds: null,
@@ -73,10 +74,11 @@ const sleep = (milliseconds) => {
         console.log("5 secondes sont passées")
         }, 5000);
 
-    switch("Facile"){
+    switch(this.props.profil.niveau){
+
 
         case "Facile" :
-            this.settingsTimer = 1000;
+            this.settingsTimer = 5000;
             break;
 
         case "Normal" :
@@ -160,11 +162,11 @@ const sleep = (milliseconds) => {
     traitement=()=> {
              console.log("traitement : ", this.currentAiIndex);
              console.log("traitetement i : ", typeof this.currentAiIndex);
-             this.selectionCouleur(sequenceIa[this.currentAiIndex]);
+             this.playIaSound(sequenceIa[this.currentAiIndex]);
              let i = this.currentAiIndex;
              setTimeout(()=> {
                 console.log("i dans settimeout ", i);
-                this.suiteTraitement(i)}, this.settingsTimer)
+                this.suiteTraitement(i)},this.timeBetweenNote)
              }
 
 /*    displayInfosPlayer=()=> {
@@ -210,7 +212,7 @@ const sleep = (milliseconds) => {
       return couleur;
     }
     // fonction ou l'Ia choisit une couleur aléatoire et la joue et remplit son tableau de séquenceIa :
-    selectionCouleur = (couleur) =>{
+    playIaSound = (couleur) =>{
 
          console.log(" Ia joue couleur " + couleur)
          switch (couleur){
@@ -268,7 +270,7 @@ const sleep = (milliseconds) => {
                        this.setState({...this.state, turn : "IA"})
                        this.tour = "IA";
                        compteurTour++;
-                     await  sleep(1000)
+        //             await  sleep(1000)
                        clickJoueur = 0;
                        this.playIa();
                     }
@@ -288,7 +290,7 @@ const sleep = (milliseconds) => {
                        this.setState({...this.state, turn : "IA"})
                        compteurTour++;
                        this.tour = "IA";
-                      await sleep(1000)
+               //       await sleep(1000)
                         clickJoueur = 0;
                        this.playIa();
                    }
@@ -308,7 +310,7 @@ const sleep = (milliseconds) => {
                        this.setState({...this.state, turn : "IA"})
                        compteurTour++;
                        this.tour = "IA";
-                          await sleep(1000)
+                        //  await sleep(1000)
                             clickJoueur = 0;
                        this.playIa();
                     }
@@ -328,7 +330,7 @@ const sleep = (milliseconds) => {
                        this.setState({...this.state, turn : "IA"})
                        compteurTour++;
                        this.tour = "IA";
-                          await sleep(1000)
+                     //     await sleep(1000)
                           clickJoueur = 0;
                        this.playIa();
                     }
