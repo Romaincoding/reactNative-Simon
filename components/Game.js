@@ -78,18 +78,21 @@ const sleep = (milliseconds) => {
 
 
         case "Facile" :
-            this.settingsTimer = 5000;
+            this.settingsTimer = 10;
+
             break;
 
         case "Normal" :
-            this.settingsTimer = 3000;
+            this.settingsTimer = 5;
+
             break;
 
         case "Difficile" :
-            this.settingsTimer = 1000;
+            this.settingsTimer = 3;
             break;
 
     }
+    this.setState({...this.state, seconds : this.settingsTimer })
            this.setState({...this.state, gameOver : "false"});
            sequenceIa = [];
            sequencePlayer = [];
@@ -192,6 +195,7 @@ const sleep = (milliseconds) => {
                  this.setState({...this.state, tourDuJoueur : "Player"})
                  this.currentAiIndex = 0;
                  console.log("tour du joueur ")
+                 this.settingsTimer
                  } else {
                  console.log("i+1")
                  this.currentAiIndex = i+1;
@@ -258,6 +262,7 @@ const sleep = (milliseconds) => {
 
     // fonction activée lorsque le joueur appuie sur une tuile :
    async playPlayer(couleur) {
+
      console.log("tour du joueur = " + compteurTour)
      //if (this.state.seconds > 0){
          sequencePlayer.push(couleur)
