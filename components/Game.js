@@ -46,7 +46,7 @@ const sleep = (milliseconds) => {
         gameOver : "false",
         turn : "IA",
         profil : {
-            niveau : 'Facile'
+            niveau : ''
         },
         Simon : {
             bleu : {
@@ -190,6 +190,7 @@ const sleep = (milliseconds) => {
              this.setState({...this.state, Simon: {...this.state.Simon, bleu: {...this.state.Simon.bleu, style: 'TuileBleu'}}});
              this.setState({...this.state, Simon: {...this.state.Simon, rouge: {...this.state.Simon.rouge, style: 'TuileRouge'}}});
              this.setState({...this.state, Simon: {...this.state.Simon, vert: {...this.state.Simon.vert, style: 'TuileVert'}}});
+             this.setState({ ...this.state, seconds: 10 })
             console.log("sequenIA length", sequenceIa.length);
              if (i+1 >= sequenceIa.length) {
                  this.setState({...this.state, tourDuJoueur : "Player"})
@@ -213,7 +214,7 @@ const sleep = (milliseconds) => {
                         console.log("sequenceIa =" + sequenceIa);
              // Jouer les sons contenus du tableau
              this.traitement();
-             this.setState({ ...this.state, seconds: 10 })
+             //this.setState({ ...this.state, seconds: 10 })
 
         }
      }
