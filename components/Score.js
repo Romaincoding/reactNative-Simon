@@ -17,21 +17,21 @@ console.log(score);
                     {//<Text>Mes scores : {this.props.score.map(y =>"\n" + y.scoreTableFacile + "\n" + y.scoreTableIntermediaire + "\n"  + y.scoreTableDifficile)}</Text>
                     }
                     <Text>Score facile : </Text>
-                    {score.facile.map((score,index)=>{
+                    {score.Facile.map((score,index)=>{
                         return(
                         <Text key={index}>{score[0]}:{score[1]}</Text>
                             )
                         }
                     )}
                     <Text> Score intermediaire :  </Text>
-                    {score.intermediaire.map((score,index)=>{
+                    {score.Intermediaire.map((score,index)=>{
                         return(
                         <Text key={index}>{score[0]}:{score[1]}</Text>
                             )
                         }
                     )}
                     <Text> Score difficile : </Text>
-                    {score.difficile.map((score,index)=>{
+                    {score.Difficile.map((score,index)=>{
                         return(
                         <Text key={index}>{score[0]}:{score[1]}</Text>
                             )

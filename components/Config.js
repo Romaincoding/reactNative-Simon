@@ -65,12 +65,12 @@ class Config extends React.Component {
                            </TouchableOpacity>
                             </View>
                             <View>
-                            <TouchableOpacity activeOpacity={0.6} style={styles.BoutonJouer} onPress= {(niveau) =>this.getLevel("Normal")}>
-                            <Text style={styles.textBouton}>Normal</Text>
+                            <TouchableOpacity activeOpacity={0.6} style={styles.BoutonJouer} onPress= {(niveau) =>this.getLevel("Intermediaire")}>
+                            <Text style={styles.textBouton}>Intermédiaire</Text>
                             </TouchableOpacity>
                             </View>
                             <View>
-                                            <TouchableOpacity activeOpacity={0.6} style={styles.BoutonJouer} onPress= {(niveau) =>this.getLevel("Diffcile")}>
+                                            <TouchableOpacity activeOpacity={0.6} style={styles.BoutonJouer} onPress= {(niveau) =>this.getLevel("Difficile")}>
 
                                                                                      <Text style={styles.textBouton}>Difficile</Text>
                                                                                  </TouchableOpacity>

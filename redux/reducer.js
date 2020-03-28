@@ -34,7 +34,7 @@ firebase.database().ref('scoreFacile').on("value", function(snapshot) {
            let nickname= result[key].pseudo;
            let points= result[key].highscore;
            console.log( "from fb.db: " + nickname + ", " + points )
-           scoreTableFacile.push([nickname,points]);
+           scoreTableFacile.push([nickname,points,key]);
        }
        console.log(scoreTableFacile);
        scoreTableFacile.sort(sortFunction);
@@ -48,7 +48,7 @@ firebase.database().ref('scoreIntermediaire').on("value", function(snapshot) {
         let nickname= result[key].pseudo;
         let points= result[key].highscore;
         console.log( "from fb.db: " + nickname + ", " + points )
-        scoreTableIntermediaire.push([nickname,points]);
+        scoreTableIntermediaire.push([nickname,points,key]);
     }
     console.log(scoreTableIntermediaire);
     scoreTableIntermediaire.sort(sortFunction);
@@ -62,7 +62,7 @@ firebase.database().ref('scoreDifficile').on("value", function(snapshot) {
         let nickname= result[key].pseudo;
         let points= result[key].highscore;
         console.log( "from fb.db: " + nickname + ", " + points )
-        scoreTableDifficile.push([nickname,points]);
+        scoreTableDifficile.push([nickname,points,key]);
     }
     console.log(scoreTableDifficile);
     scoreTableDifficile.sort(sortFunction);
@@ -133,9 +133,9 @@ let initialState = {
 //  @param      {String}  {pseudo}
 
     score:{
-    facile:scoreTableFacile,
-    intermediaire:scoreTableIntermediaire,
-    difficile:scoreTableDifficile
+    Facile: scoreTableFacile,
+    Intermediaire: scoreTableIntermediaire,
+    Difficile: scoreTableDifficile
     },
 
     // state.team
@@ -159,8 +159,8 @@ let initialState = {
 
     // state.profil
     profil: {
-    pseudo:'',
-    niveau:'',
+    pseudo:'pseudo',
+    niveau:'Intermediaire',
     }
     }
 
@@ -194,8 +194,37 @@ export default function reducer(state = initialState, action) {
                     return { ...state, manches: action.manches};
 */
         case SEND_SCORE:
-                    //envoi du score a firebase
-                    return state;
+            firebase.database().ref('score' + state.profil.niveau).on("value", function(snapshot) {
+            let scoreTable = [];
+            result = snapshot.val();
+            console.log(result);
+            for (let key of Object.keys(result)) {
+               let nickname= result[key].pseudo;
+               let points= result[key].highscore;
+               console.log( "from fb.db: " + nickname + ", " + points )
+               scoreTable.push([nickname,points,key]);
+            }
+            console.log(scoreTable);
+            scoreTable.sort(sortFunction);
+            console.log(scoreTable);
+            console.log(scoreTable.lenght);
+            if (action.score > scoreTable[scoreTable.length-1][1] || scoreTable.length<10){
+                firebase.database().ref('score' + state.profil.niveau).push({
+                    pseudo: state.profil.pseudo,
+                    highscore: action.score
+                });
+                scoreTable.push([state.profil.pseudo,action.score]);
+                scoreTable.sort(sortFunction);
+                if (scoreTable.lenght>10){
+                    firebase.database().ref('score' + state.profil.niveau).child(scoreTable[scoreTable.length-1][2]).remove();
+                    scoreTable.pop();
+                }
+                console.log(scoreTable);
+                return { ...state, score: {...state.score, [state.profil.niveau]: scoreTable }};
+            }
+           return state;
+           });
+            //envoi du score a firebase
         default:
             return state;
     }

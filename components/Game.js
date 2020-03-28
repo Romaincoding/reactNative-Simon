@@ -217,6 +217,7 @@ traitement=()=> {
                 this.gameOver();
                 this.props.sendScore(compteurTour);
                 console.log("le compteur est a " + compteurTour);
+                break;
 
                 } else{
                     this.sound.clickjaune.replayAsync()
@@ -239,6 +240,7 @@ traitement=()=> {
                    this.sound.clickGameOver.replayAsync()
                    this.gameOver();
                    this.props.sendScore(compteurTour);
+                   break;
                 } else{
                    this.sound.clickbleu.replayAsync()
                      this.setState({...this.state, seconds : 10})
@@ -259,6 +261,7 @@ traitement=()=> {
                     this.sound.clickGameOver.replayAsync()
                     this.gameOver();
                     this.props.sendScore(compteurTour);
+                    break;
                 } else{
                     this.sound.clickrouge.replayAsync()
                       this.setState({...this.state, seconds : 10})
@@ -279,6 +282,7 @@ traitement=()=> {
                    this.sound.clickGameOver.replayAsync()
                    this.gameOver();
                    this.props.sendScore(compteurTour);
+                   break;
                 } else {
                     this.sound.clickvert.replayAsync()
                       this.setState({...this.state, seconds : 10})
