@@ -18,7 +18,8 @@ var sequencePlayer = []
 var compteurTour = 0;
 console.log(compteurTour);
 var clickJoueur = 0;
-
+var echec = "echec";
+var temps = "temps";
 
 console.log(couleurTab);
 console.log(sequenceIa);
@@ -44,6 +45,7 @@ const sleep = (milliseconds) => {
 
         seconds: null,
         gameOver : "false",
+        timeLeft : "false",
         turn : "IA",
         profil : {
             niveau : ''
@@ -76,7 +78,6 @@ const sleep = (milliseconds) => {
 
     switch(this.props.profil.niveau){
 
-
         case "Facile" :
             this.settingsTimer = 10;
 
@@ -93,17 +94,28 @@ const sleep = (milliseconds) => {
 
     }
     this.setState({...this.state, seconds : this.settingsTimer })
-           this.setState({...this.state, gameOver : "false"});
-           sequenceIa = [];
-           sequencePlayer = [];
-           compteurTour = 0;
-           this.currentAiIndex = 0;
-           this.playIa();
-           console.log(this.props.profil.niveau);
+        this.setState({...this.state, gameOver : "false"});
+        this.playIa();
+        console.log(this.props.profil.niveau);
+     }
 
-
-
-       }
+    gameOver = (info) => {
+    if (info == "echec") {
+            this.setState({...this.state, gameOver : "true"});
+            clearInterval(this.myInterval);
+            sequenceIa = [];
+            sequencePlayer = [];
+            compteurTour = 0;
+            this.currentAiIndex = 0;
+    } if (info == "temps") {
+            this.setState({...this.state, timeLeft : "true"});
+            clearInterval(this.myInterval);
+            sequenceIa = [];
+            sequencePlayer = [];
+            compteurTour = 0;
+            this.currentAiIndex = 0;
+            }
+    }
 
     // fonction qui gère les sons :
     async componentDidMount (){
@@ -152,6 +164,14 @@ const sleep = (milliseconds) => {
             console.log('errorSound', error);
           }
 
+          this.timer();
+     };
+
+ componentWillUnmount() {
+          clearInterval(this.myInterval)
+    }
+
+timer=()=> {
           this.myInterval = setInterval(() => {
               const {seconds} = this.state;
               if (seconds > 0) {
@@ -159,15 +179,10 @@ const sleep = (milliseconds) => {
                       seconds: seconds - 1
                   }))
               } if (seconds == 0) {
-                   this.gameOver();
+                   this.gameOver(temps);
               }
           }, 1000)
-     };
-
- componentWillUnmount() {
-          clearInterval(this.myInterval)
-    }
-
+}
     traitement=()=> {
              console.log("traitement : ", this.currentAiIndex);
              console.log("traitement i : ", typeof this.currentAiIndex);
@@ -257,10 +272,6 @@ const sleep = (milliseconds) => {
           };
      }
 
-    gameOver = () => {
-        this.setState({...this.state, gameOver : "true"});
-    }
-
     // fonction activée lorsque le joueur appuie sur une tuile :
    async playPlayer(couleur) {
 
@@ -271,7 +282,7 @@ const sleep = (milliseconds) => {
            case "jaune":
              if (couleur != sequenceIa[clickJoueur]) {
                this.sound.clickGameOver.replayAsync()
-               this.gameOver();
+               this.gameOver(echec);
                this.props.sendScore(compteurTour);
                console.log("le compteur est a " + compteurTour);
 
@@ -298,7 +309,7 @@ const sleep = (milliseconds) => {
            case "bleu":
              if (couleur != sequenceIa[clickJoueur]) {
                this.sound.clickGameOver.replayAsync()
-               this.gameOver();
+               this.gameOver(echec);
                this.props.sendScore(compteurTour);
              } else {
                this.sound.clickbleu.replayAsync()
@@ -321,7 +332,7 @@ const sleep = (milliseconds) => {
            case "rouge":
              if (couleur != sequenceIa[clickJoueur]) {
                this.sound.clickGameOver.replayAsync()
-               this.gameOver();
+               this.gameOver(echec);
                this.props.sendScore(compteurTour);
              } else {
                this.sound.clickrouge.replayAsync()
@@ -344,7 +355,7 @@ const sleep = (milliseconds) => {
            case "vert":
              if (couleur != sequenceIa[clickJoueur]) {
                this.sound.clickGameOver.replayAsync()
-               this.gameOver();
+               this.gameOver(echec);
                this.props.sendScore(compteurTour);
              } else {
                this.sound.clickvert.replayAsync()
@@ -388,6 +399,7 @@ const sleep = (milliseconds) => {
     const {profil} = this.props;
     const {seconds} = this.state;
     var gameOver;
+    var timeLeft;
     //var tourJoueur; // variable qui va stocker et afficher le tour du joueur (via une balise <text>)
 
 /*    if (this.tour == "Player"){ // affichage du contenu suivant si le state est similaire
@@ -396,11 +408,14 @@ const sleep = (milliseconds) => {
 
     if (this.state.gameOver== "true"){
         gameOver = <Text>Tu as perdu</Text>
-    } if (this.state.seconds == 0) {
-        gameOver = <Text>Le temps est écoulé, tu as perdu !</Text>
-    }
-    else{
+    } else{
         gameOver = <Text></Text>
+    }
+
+    if (this.state.timeLeft== "true"){
+        timeLeft = <Text>Le temps est écoulé, tu as perdu !</Text>
+    } else{
+        timeLeft = <Text></Text>
     }
          return (
            // (TouchableOpacity car une view est incompatible avec un onPress)
@@ -411,6 +426,7 @@ const sleep = (milliseconds) => {
                      <Text>Niveau : {profil.niveau}</Text>
                      <Text>Temps restant : {seconds}</Text>
                      {gameOver}
+                     {timeLeft}
                 </View>
 
                <View style={styles.RangeeTuiles}>
