@@ -250,105 +250,105 @@ const sleep = (milliseconds) => {
 
     // fonction activée lorsque le joueur appuie sur une tuile :
    async playPlayer(couleur) {
-   console.log("tour du joueur = " + compteurTour)
-          sequencePlayer.push(couleur)
-          switch (couleur){
-                case "jaune":
-                if(couleur != sequenceIa[clickJoueur]){
-                this.sound.clickGameOver.replayAsync()
-                this.gameOver();
-                this.props.sendScore(compteurTour);
-                console.log("le compteur est a " + compteurTour);
+     console.log("tour du joueur = " + compteurTour)
+     sequencePlayer.push(couleur)
+     switch (couleur) {
+       case "jaune":
+         if (couleur != sequenceIa[clickJoueur]) {
+           this.sound.clickGameOver.replayAsync()
+           this.gameOver();
+           this.props.sendScore(compteurTour);
+           console.log("le compteur est a " + compteurTour);
 
-                } else{
-                    this.sound.clickjaune.replayAsync()
-                    this.tour = "Player";
-                      this.setState({...this.state, seconds : 10})
-                    clickJoueur++;
-                    if(clickJoueur == sequenceIa.length) {
-                    console.log("taille du IATab dans playPlayerJaune: " + sequenceIa.length);
-                       this.setState({...this.state, turn : "IA"})
-                       this.tour = "IA";
-                       compteurTour++;
-        //             await  sleep(1000)
-                       clickJoueur = 0;
-                       this.playIa();
-                    }
-                    }
-                break;
-                case "bleu":
-                if(couleur != sequenceIa[clickJoueur]){
-                   this.sound.clickGameOver.replayAsync()
-                   this.gameOver();
-                   this.props.sendScore(compteurTour);
-                } else{
-                   this.sound.clickbleu.replayAsync()
-                     this.setState({...this.state, seconds : 10})
-                   clickJoueur++;
-                   if(clickJoueur == sequenceIa.length) {
-                   console.log("taille du IATab: " + sequenceIa.length);
-                       this.setState({...this.state, turn : "IA"})
-                       compteurTour++;
-                       this.tour = "IA";
-               //       await sleep(1000)
-                        clickJoueur = 0;
-                       this.playIa();
-                   }
-                }
-                break;
-                case "rouge":
-                if(couleur != sequenceIa[clickJoueur]){
-                    this.sound.clickGameOver.replayAsync()
-                    this.gameOver();
-                    this.props.sendScore(compteurTour);
-                } else{
-                    this.sound.clickrouge.replayAsync()
-                      this.setState({...this.state, seconds : 10})
-                    clickJoueur++;
-                    if(clickJoueur == sequenceIa.length) {
-                    console.log("taille du IATab: " + sequenceIa.length);
-                       this.setState({...this.state, turn : "IA"})
-                       compteurTour++;
-                       this.tour = "IA";
-                        //  await sleep(1000)
-                            clickJoueur = 0;
-                       this.playIa();
-                    }
-                }
-                break;
-                case "vert":
-                if(couleur != sequenceIa[clickJoueur]){
-                   this.sound.clickGameOver.replayAsync()
-                   this.gameOver();
-                   this.props.sendScore(compteurTour);
-                } else {
-                    this.sound.clickvert.replayAsync()
-                      this.setState({...this.state, seconds : 10})
-                    clickJoueur++;
-                    if(clickJoueur == sequenceIa.length) {
-                    console.log("taille du IATab: " + sequenceIa.length);
-                       this.setState({...this.state, turn : "IA"})
-                       compteurTour++;
-                       this.tour = "IA";
-                     //     await sleep(1000)
-                          clickJoueur = 0;
-                       this.playIa();
-                    }
-                }
-                break;
-          };
+         } else {
+           this.sound.clickjaune.replayAsync()
+           this.tour = "Player";
+           this.setState({ ...this.state, seconds: 10 })
+           clickJoueur++;
+           if (clickJoueur == sequenceIa.length) {
+             console.log("taille du IATab dans playPlayerJaune: " + sequenceIa.length);
+             this.setState({ ...this.state, turn: "IA" })
+             this.tour = "IA";
+             compteurTour++;
+             //             await  sleep(1000)
+             clickJoueur = 0;
+             this.playIa();
+           }
+         }
+         break;
+       case "bleu":
+         if (couleur != sequenceIa[clickJoueur]) {
+           this.sound.clickGameOver.replayAsync()
+           this.gameOver();
+           this.props.sendScore(compteurTour);
+         } else {
+           this.sound.clickbleu.replayAsync()
+           this.setState({ ...this.state, seconds: 10 })
+           clickJoueur++;
+           if (clickJoueur == sequenceIa.length) {
+             console.log("taille du IATab: " + sequenceIa.length);
+             this.setState({ ...this.state, turn: "IA" })
+             compteurTour++;
+             this.tour = "IA";
+             //       await sleep(1000)
+             clickJoueur = 0;
+             this.playIa();
+           }
+         }
+         break;
+       case "rouge":
+         if (couleur != sequenceIa[clickJoueur]) {
+           this.sound.clickGameOver.replayAsync()
+           this.gameOver();
+           this.props.sendScore(compteurTour);
+         } else {
+           this.sound.clickrouge.replayAsync()
+           this.setState({ ...this.state, seconds: 10 })
+           clickJoueur++;
+           if (clickJoueur == sequenceIa.length) {
+             console.log("taille du IATab: " + sequenceIa.length);
+             this.setState({ ...this.state, turn: "IA" })
+             compteurTour++;
+             this.tour = "IA";
+             //  await sleep(1000)
+             clickJoueur = 0;
+             this.playIa();
+           }
+         }
+         break;
+       case "vert":
+         if (couleur != sequenceIa[clickJoueur]) {
+           this.sound.clickGameOver.replayAsync()
+           this.gameOver();
+           this.props.sendScore(compteurTour);
+         } else {
+           this.sound.clickvert.replayAsync()
+           this.setState({ ...this.state, seconds: 10 })
+           clickJoueur++;
+           if (clickJoueur == sequenceIa.length) {
+             console.log("taille du IATab: " + sequenceIa.length);
+             this.setState({ ...this.state, turn: "IA" })
+             compteurTour++;
+             this.tour = "IA";
+             //     await sleep(1000)
+             clickJoueur = 0;
+             this.playIa();
+           }
+         }
+         break;
+     };
 
-          console.log("reçu : " + couleur);
+     console.log("reçu : " + couleur);
 
-          console.log("attendu : " +sequenceIa[clickJoueur]);
-          console.log("clique joueur : " + clickJoueur);
+     console.log("attendu : " + sequenceIa[clickJoueur]);
+     console.log("clique joueur : " + clickJoueur);
 
 
-         // console.log("tableau joueur avant pop " +sequenceIa);
-          //j'enlève le premier élément du tableau : comme ça on a toujours le prochain élément à comparer à la même position
-          // à faire il faut garder en mémoire le tableau de l'Ia pour le tour d'après, faire un deuxième tableau temporaire?
-         // console.log("tableau joueur après " +sequenceIa);
-    };
+     // console.log("tableau joueur avant pop " +sequenceIa);
+     //j'enlève le premier élément du tableau : comme ça on a toujours le prochain élément à comparer à la même position
+     // à faire il faut garder en mémoire le tableau de l'Ia pour le tour d'après, faire un deuxième tableau temporaire?
+     // console.log("tableau joueur après " +sequenceIa);
+   };
 
     //fonction timer
 
