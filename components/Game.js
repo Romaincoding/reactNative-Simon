@@ -45,6 +45,7 @@ class Game extends React.Component {
         this.currentAiIndex = 0;
         this.settingsTimer;
         this.timeBetweenNote = 750;
+        this.GameOver = false;
         this.state = {
 
             seconds: null,
@@ -98,6 +99,7 @@ class Game extends React.Component {
 
         }
         this.setState({...this.state, timeLeft: false, gameOver: false, seconds: this.settingsTimer})
+        this.GameOver = false;
         console.log("gameOver", this.state.gameOver);
         this.playIa();
         console.log(this.props.profil.niveau);
@@ -107,6 +109,7 @@ class Game extends React.Component {
         texteJouer = "Rejouer";
         if (info == "echec") {
             this.setState({...this.state, gameOver: true});
+             this.GameOver = true;
             clearInterval(this.myInterval);
             sequenceIa = [];
             sequencePlayer = [];
@@ -246,6 +249,7 @@ class Game extends React.Component {
             //this.setState({ ...this.state, seconds: 10 })
 
         }
+        console.log("on sort de playIa")
     }
 
     getRandomColor = () => {
@@ -434,11 +438,9 @@ class Game extends React.Component {
         /*    if (this.tour == "Player"){ // affichage du contenu suivant si le state est similaire
                 tourJoueur = <Text style={styles.ATonTour}>A ton tour ! </Text>
             }*/
-
-        if (this.state.gameOver == true) {
+console.log("GameOverrender  = " + this.state.gameOver);
+        if (this.GameOver == true) {
             gameOver = <Text>Tu as perdu</Text>
-        } else {
-            gameOver = <Text></Text>
         }
 
 
