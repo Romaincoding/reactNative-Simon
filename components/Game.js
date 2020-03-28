@@ -177,7 +177,7 @@ class Game extends React.Component {
                     seconds: seconds - 1
                 }))
             }
-            if (seconds == 0) {
+            if (seconds === 0) {
                 this.gameOver(temps);
             }
         }, 1000)
