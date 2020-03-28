@@ -45,6 +45,7 @@ class Game extends React.Component {
         this.currentAiIndex = 0;
         this.settingsTimer;
         this.timeBetweenNote = 750;
+        this.timeLeft = false;
         this.GameOver = false;
         this.state = {
 
@@ -100,12 +101,14 @@ class Game extends React.Component {
         }
         this.setState({...this.state, timeLeft: false, gameOver: false, seconds: this.settingsTimer})
         this.GameOver = false;
+        this.timeLeft = false;
         console.log("gameOver", this.state.gameOver);
         this.playIa();
         console.log(this.props.profil.niveau);
     }
 
     gameOver = (info) => {
+    console.log("infos est " + info)
         texteJouer = "Rejouer";
         if (info == "echec") {
             this.setState({...this.state, gameOver: true});
@@ -117,7 +120,9 @@ class Game extends React.Component {
             this.currentAiIndex = 0;
         }
         if (info == "temps") {
+        console.log("je passe la?")
             this.setState({...this.state, timeLeft: true});
+            this.timeLeft = true;
             clearInterval(this.myInterval);
             sequenceIa = [];
             sequencePlayer = [];
@@ -446,14 +451,12 @@ console.log("GameOverrender  = " + this.state.gameOver);
 
         if (this.state.timeLeft == true) {
             timeLeft = <Text>Le temps est écoulé, tu as perdu !</Text>
-        } else {
-            timeLeft = <Text></Text>
-        }
+       }
 
-        if (this.state.resetAllStates == true) {
-            timeLeft = <Text></Text>
-            gameOver = <Text></Text>
-        }
+ //       if (this.state.resetAllStates == true) {
+   //         timeLeft = <Text></Text>
+  //          gameOver = <Text></Text>
+   //     }
 
         return (
             // (TouchableOpacity car une view est incompatible avec un onPress)

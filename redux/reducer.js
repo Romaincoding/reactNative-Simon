@@ -234,7 +234,7 @@ export default function reducer(state = initialState, action) {
                 console.log(scoreTable);
                 scoreTable.sort(sortFunction);
                 console.log(scoreTable);
-                console.log(scoreTable.lenght);
+                console.log(scoreTable.length);
                 if (action.score > scoreTable[scoreTable.length - 1][1] || scoreTable.length < 10) {
                     firebase.database().ref('score' + state.profil.niveau).push({
                         pseudo: state.profil.pseudo,
@@ -242,7 +242,7 @@ export default function reducer(state = initialState, action) {
                     });
                     scoreTable.push([state.profil.pseudo, action.score]);
                     scoreTable.sort(sortFunction);
-                    if (scoreTable.lenght > 10) {
+                    if (scoreTable.length > 10) {
                         firebase.database().ref('score' + state.profil.niveau).child(scoreTable[scoreTable.length - 1][2]).remove();
                         scoreTable.pop();
                     }
