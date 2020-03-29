@@ -221,26 +221,14 @@ class Game extends React.Component {
         //console.log("boucleIAPart2 : ", i);
         this.setState({ jauneIconOpacity: 1 })
         this.setState({ vertIconOpacity: 1 })
-        this.setState({ jauneIconOpacity: 1 })
+        this.setState({ bleuIconOpacity: 1 })
         this.setState({ rougeIconOpacity: 1 })
-        this.setState({
-            Simon: {...this.state.Simon, jaune: {...this.state.Simon.jaune, style: 'TuileJaune'}}
-        });
-        this.setState({
-            Simon: {...this.state.Simon, bleu: {...this.state.Simon.bleu, style: 'TuileBleu'}}
-        });
-        this.setState({
-            Simon: {...this.state.Simon, rouge: {...this.state.Simon.rouge, style: 'TuileRouge'}}
-        });
-        this.setState({
-            Simon: {...this.state.Simon, vert: {...this.state.Simon.vert, style: 'TuileVert'}}
-        });
       //  this.setState({ seconds: 10})
         //console.log("sequenIA length", sequenceIa.length);
         if (i + 1 >= sequenceIa.length) {
             this.setState({ tourDuJoueur: "Player"})
             this.currentAiIndex = 0;
-            console.log("tour du joueur ")
+            console.log("tour du joueur")
             this.settingsTimer
         } else {
             //console.log("i+1")
@@ -279,37 +267,25 @@ class Game extends React.Component {
         switch (couleur) {
             case "jaune":
                 this.setState({ jauneIconOpacity: 0.6 })
-                this.setState({
-                    Simon: {...this.state.Simon, jaune: {...this.state.Simon.jaune, style: 'TuileJauneLight'}}
-                });
                 this.sound.clickjaune.replayAsync();
                 //     sequenceIa.push("jaune");
                 break;
 
             case "bleu":
                 this.setState({ bleuIconOpacity: 0.6 })
-                this.setState({
-                    Simon: {...this.state.Simon, bleu: {...this.state.Simon.bleu, style: 'TuileBleuLight'}}
-                });
                 this.sound.clickbleu.replayAsync();
                 //  sequenceIa.push("bleu");
 
                 break;
             case "rouge":
                 this.setState({ rougeIconOpacity: 0.6 })
-                this.setState({
-                    Simon: {...this.state.Simon, rouge: {...this.state.Simon.rouge, style: 'TuileRougeLight'}}
-                });
                 this.sound.clickrouge.replayAsync();
                 // sequenceIa.push("rouge");
 
                 break;
             case "vert":
-                this.sound.clickvert.replayAsync();
                 this.setState({ vertIconOpacity: 0.6 })
-                this.setState({
-                    Simon: {...this.state.Simon, vert: {...this.state.Simon.vert, style: 'TuileVertLight'}}
-                });
+                this.sound.clickvert.replayAsync();
                 //    sequenceIa.push("vert");
 
                 break;
