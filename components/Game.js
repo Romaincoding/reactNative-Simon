@@ -53,28 +53,10 @@ class Game extends React.Component {
             profil: {
                 niveau: ''
             },
-            blueIconStyle: 'TuileBleu',
             rougeIconOpacity: 1,
             vertIconOpacity: 1,
             jauneIconOpacity: 1,
-            bleuIconOpacity: 1,
-            vertIconStyle: 'TuileVert',
-            jauneIconStyle: 'TuileJaune',
-            rougeIconStyle: 'TuileRouge',
-            Simon: {
-                bleu: {
-                    style: 'TuileBleu'
-                },
-                rouge: {
-                    style: 'TuileRouge'
-                },
-                jaune: {
-                    style: 'TuileJaune'
-                },
-                vert: {
-                    style: 'TuileVert'
-                }
-            },
+            bleuIconOpacity: 1
         }
     }
 
@@ -84,12 +66,10 @@ class Game extends React.Component {
 
             case "Facile" :
                 this.settingsTimer = 10;
-
                 break;
 
             case "Intermediaire" :
                 this.settingsTimer = 5;
-
                 break;
 
             case "Difficile" :
@@ -262,36 +242,28 @@ class Game extends React.Component {
 
     // fonction ou l'Ia choisit une couleur aléatoire et la joue et remplit son tableau de séquenceIa :
     playIaSound = (couleur) => {
-
         console.log(" Ia joue couleur " + couleur)
         switch (couleur) {
             case "jaune":
                 this.setState({ jauneIconOpacity: 0.6 })
                 this.sound.clickjaune.replayAsync();
-                //     sequenceIa.push("jaune");
                 break;
 
             case "bleu":
                 this.setState({ bleuIconOpacity: 0.6 })
                 this.sound.clickbleu.replayAsync();
-                //  sequenceIa.push("bleu");
-
                 break;
+
             case "rouge":
                 this.setState({ rougeIconOpacity: 0.6 })
                 this.sound.clickrouge.replayAsync();
-                // sequenceIa.push("rouge");
-
                 break;
+
             case "vert":
                 this.setState({ vertIconOpacity: 0.6 })
                 this.sound.clickvert.replayAsync();
-                //    sequenceIa.push("vert");
-
                 break;
-                console.log("tableau ia" + sequenceIa);
         }
-        ;
     }
 
     // fonction activée lorsque le joueur appuie sur une tuile :
@@ -345,7 +317,7 @@ class Game extends React.Component {
                         this.tour = "IA";
                         //       await sleep(1000)
                         clickJoueur = 0;
-                        console.log("stop timer second")
+                        console.log("stop timer second ")
                         clearInterval(this.myInterval)
                         setTimeout(() => {
                             this.playIa();
@@ -440,16 +412,9 @@ class Game extends React.Component {
             timeLeft = <Text>Le temps est écoulé, tu as perdu !</Text>
         }
 
-    
-            console.log("rougeIconOupacity :" + this.state.rougeIconOpacity)
-            console.log("bleuIconOupacity :" + this.state.bleuIconOpacity)
-            console.log("vertIconOupacity :" + this.state.vertIconOpacity)
-            console.log("jauneIconOupacity :" + this.state.jauneIconOpacity)
-            
         return (
             // (TouchableOpacity car une view est incompatible avec un onPress)
             <View style={styles.ContainerTuiles}>
-
                 <View style={styles.TextInfos}>
                     <Text style={styles.textPartie}>Séquences retenues : {compteurTour}</Text>
                     <Text>Niveau : {profil.niveau}</Text>
@@ -460,22 +425,30 @@ class Game extends React.Component {
 
                 <View style={styles.RangeeTuiles}>
                     <View style={{ opacity: this.state.bleuIconOpacity }}>
-                        <TouchableOpacity style={styles[this.state.Simon.bleu.style]} activeOpacity={0.6}
+                        <TouchableOpacity 
+                            style={styles.TuileBleu} 
+                            activeOpacity={0.6}
                             onPress={() => this.playPlayer("bleu")} />
                     </View>
                     <View style={{ opacity: this.state.vertIconOpacity }}>
-                        <TouchableOpacity style={styles[this.state.Simon.vert.style]} activeOpacity={0.6}
+                        <TouchableOpacity 
+                            style={styles.TuileVert} 
+                            activeOpacity={0.6}
                             onPress={() => this.playPlayer("vert")} />
                     </View>
                 </View>
 
                 <View style={styles.RangeeTuiles}>
                     <View style={{ opacity: this.state.rougeIconOpacity }}>
-                        <TouchableOpacity style={styles[this.state.Simon.rouge.style]} activeOpacity={0.6}
+                        <TouchableOpacity 
+                            style={styles.TuileRouge} 
+                            activeOpacity={0.6}
                             onPress={() => this.playPlayer("rouge")} />
                     </View>
                     <View style={{ opacity: this.state.jauneIconOpacity }}>
-                        <TouchableOpacity style={styles[this.state.Simon.jaune.style]} activeOpacity={0.6}
+                        <TouchableOpacity 
+                            style={styles.TuileJaune} 
+                            activeOpacity={0.6}
                             onPress={() => this.playPlayer("jaune")} />
                     </View>
                 </View>
@@ -483,7 +456,6 @@ class Game extends React.Component {
                 <View style={styles.RangeeTuiles}>
                     <TouchableOpacity activeOpacity={0.6} style={styles.BoutonJouer}
                                       onPress={() => this.startNewGame()}>
-
                         <Text style={styles.textBouton}>{texteJouer}</Text>
                     </TouchableOpacity>
                 </View>
@@ -518,19 +490,7 @@ const styles = StyleSheet.create({
         backgroundColor: "#01579b",
         borderRadius: 8
     },
-    TuileBleuLight: {
-        width: 100,
-        height: 100,
-        backgroundColor: "#01579b",
-        borderRadius: 8
-    },
     TuileVert: {
-        width: 100,
-        height: 100,
-        backgroundColor: '#1b5e20',
-        borderRadius: 8
-    },
-    TuileVertLight: {
         width: 100,
         height: 100,
         backgroundColor: '#1b5e20',
@@ -543,21 +503,7 @@ const styles = StyleSheet.create({
         marginTop: 25,
         borderRadius: 8
     },
-    TuileRougeLight: {
-        width: 100,
-        height: 100,
-        backgroundColor: '#bf360c',
-        marginTop: 25,
-        borderRadius: 8
-    },
     TuileJaune: {
-        width: 100,
-        height: 100,
-        backgroundColor: '#fbc02d',
-        marginTop: 25,
-        borderRadius: 8
-    },
-    TuileJauneLight: {
         width: 100,
         height: 100,
         backgroundColor: '#fbc02d',
