@@ -45,14 +45,10 @@ class Game extends React.Component {
         this.currentAiIndex = 0;
         this.settingsTimer;
         this.timeBetweenNote = 750;
-        this.timeLeft = false;
-        this.GameOver = false;
         this.state = {
-
             seconds: null,
             gameOver: false,
-            timeLeft: false,
-            resetAllStates: false,
+            timeLeft:false,
             turn: "IA",
             profil: {
                 niveau: ''
@@ -70,18 +66,12 @@ class Game extends React.Component {
                 vert: {
                     style: 'TuileVert'
                 }
-
             },
         }
     }
 
     startNewGame() {
 
-        // La ligne du dessous lance un timer qui expira dans 5 sec et affichera son log à ce moment là.
-        // cet appel n'est pas bloquant, on passe à la ligne 75 direct
-        setTimeout(() => {
-            console.log("5 secondes sont passées")
-        }, 5000);
         switch (this.props.profil.niveau) {
 
             case "Facile" :
@@ -89,7 +79,7 @@ class Game extends React.Component {
 
                 break;
 
-            case "Normal" :
+            case "Intermediaire" :
                 this.settingsTimer = 5;
 
                 break;
@@ -99,35 +89,26 @@ class Game extends React.Component {
                 break;
 
         }
-        this.setState({...this.state, timeLeft: false, gameOver: false, seconds: this.settingsTimer})
-        this.GameOver = false;
-        this.timeLeft = false;
-        console.log("gameOver", this.state.gameOver);
+        this.setState({ timeLeft: false, gameOver: false, seconds: this.settingsTimer})
         this.playIa();
         console.log(this.props.profil.niveau);
     }
 
     gameOver = (info) => {
-    console.log("infos est " + info)
+        this.sound.clickGameOver.replayAsync()
         texteJouer = "Rejouer";
+        console.log("stop timer second")
+        clearInterval(this.myInterval);
+        sequenceIa = [];
+        sequencePlayer = [];
+        compteurTour = 0;
+        this.currentAiIndex = 0;
+
         if (info == "echec") {
-            this.setState({...this.state, gameOver: true});
-             this.GameOver = true;
-            clearInterval(this.myInterval);
-            sequenceIa = [];
-            sequencePlayer = [];
-            compteurTour = 0;
-            this.currentAiIndex = 0;
+            this.setState({ gameOver: true});
         }
-        if (info == "temps") {
-        console.log("je passe la?")
-            this.setState({...this.state, timeLeft: true});
-            this.timeLeft = true;
-            clearInterval(this.myInterval);
-            sequenceIa = [];
-            sequencePlayer = [];
-            compteurTour = 0;
-            this.currentAiIndex = 0;
+        else if (info == "temps") {
+            this.setState({ timeLeft: true});
         }
     }
 
@@ -177,7 +158,7 @@ class Game extends React.Component {
         } catch (error) {
             console.log('errorSound', error);
         }
-
+/*
         this.myInterval = setInterval(() => {
             const {seconds} = this.state;
             if (seconds > 0) {
@@ -189,51 +170,66 @@ class Game extends React.Component {
                 this.gameOver(temps);
             }
         }, 1000)
+  */
     };
 
+    launchTimer() {
+        console.log("restart timer de second")
+        // On le clean au cas où
+        clearInterval(this.myInterval)
+        this.myInterval = setInterval(() => {
+            const {seconds} = this.state;
+            if (seconds > 0) {
+                this.setState(({seconds}) => ({
+                    seconds: seconds - 1
+                }))
+            }
+            if (seconds === 0) {
+                this.gameOver(temps);
+            }
+        }, 1000)
+    }
+
     componentWillUnmount() {
+        console.log("stop timer second")
         clearInterval(this.myInterval)
     }
 
     boucleIAPart1 = () => {
-        console.log("boucleIAPart1 : ", this.currentAiIndex);
-        console.log("boucleIAPart1 i : ", typeof this.currentAiIndex);
+        //console.log("boucleIAPart1 : ", this.currentAiIndex);
+        //console.log("boucleIAPart1 i : ", typeof this.currentAiIndex);
         this.playIaSound(sequenceIa[this.currentAiIndex]);
         let i = this.currentAiIndex;
         setTimeout(() => {
-            console.log("i dans settimeout ", i);
+            //console.log("i dans settimeout ", i);
             this.boucleIAPart2(i)
         }, this.timeBetweenNote)
     }
 
 
     boucleIAPart2 = (i) => {
-        console.log("boucleIAPart2 : ", i);
+        //console.log("boucleIAPart2 : ", i);
         this.setState({
-            ...this.state,
             Simon: {...this.state.Simon, jaune: {...this.state.Simon.jaune, style: 'TuileJaune'}}
         });
         this.setState({
-            ...this.state,
             Simon: {...this.state.Simon, bleu: {...this.state.Simon.bleu, style: 'TuileBleu'}}
         });
         this.setState({
-            ...this.state,
             Simon: {...this.state.Simon, rouge: {...this.state.Simon.rouge, style: 'TuileRouge'}}
         });
         this.setState({
-            ...this.state,
             Simon: {...this.state.Simon, vert: {...this.state.Simon.vert, style: 'TuileVert'}}
         });
-        this.setState({...this.state, seconds: 10})
-        console.log("sequenIA length", sequenceIa.length);
+      //  this.setState({ seconds: 10})
+        //console.log("sequenIA length", sequenceIa.length);
         if (i + 1 >= sequenceIa.length) {
-            this.setState({...this.state, tourDuJoueur: "Player"})
+            this.setState({ tourDuJoueur: "Player"})
             this.currentAiIndex = 0;
             console.log("tour du joueur ")
             this.settingsTimer
         } else {
-            console.log("i+1")
+            //console.log("i+1")
             this.currentAiIndex = i + 1;
             setTimeout(() => {
                 this.boucleIAPart1()
@@ -243,18 +239,17 @@ class Game extends React.Component {
 
 // boucle en dur qui joue une suite de couleur et state qui se réinitialise pour que les boutons ne restent pas opaques
     playIa = () => {
-        this.setState({...this.state, seconds: null})
+        this.setState({ seconds: null})
         if (this.tour == "IA") {
             // on rajoute un element random dans le tableau ici
             var couleur = this.getRandomColor();
             sequenceIa.push(couleur);
-            console.log("sequenceIa =" + sequenceIa);
+            //console.log("sequenceIa =" + sequenceIa);
             // Jouer les sons contenus du tableau
             this.boucleIAPart1();
             //this.setState({ ...this.state, seconds: 10 })
 
         }
-        console.log("on sort de playIa")
     }
 
     getRandomColor = () => {
@@ -270,7 +265,6 @@ class Game extends React.Component {
         switch (couleur) {
             case "jaune":
                 this.setState({
-                    ...this.state,
                     Simon: {...this.state.Simon, jaune: {...this.state.Simon.jaune, style: 'TuileJauneLight'}}
                 });
                 this.sound.clickjaune.replayAsync();
@@ -279,7 +273,6 @@ class Game extends React.Component {
 
             case "bleu":
                 this.setState({
-                    ...this.state,
                     Simon: {...this.state.Simon, bleu: {...this.state.Simon.bleu, style: 'TuileBleuLight'}}
                 });
                 this.sound.clickbleu.replayAsync();
@@ -288,7 +281,6 @@ class Game extends React.Component {
                 break;
             case "rouge":
                 this.setState({
-                    ...this.state,
                     Simon: {...this.state.Simon, rouge: {...this.state.Simon.rouge, style: 'TuileRougeLight'}}
                 });
                 this.sound.clickrouge.replayAsync();
@@ -298,7 +290,6 @@ class Game extends React.Component {
             case "vert":
                 this.sound.clickvert.replayAsync();
                 this.setState({
-                    ...this.state,
                     Simon: {...this.state.Simon, vert: {...this.state.Simon.vert, style: 'TuileVertLight'}}
                 });
                 //    sequenceIa.push("vert");
@@ -318,7 +309,6 @@ class Game extends React.Component {
         switch (couleur) {
             case "jaune":
                 if (couleur != sequenceIa[clickJoueur]) {
-                    this.sound.clickGameOver.replayAsync()
                     this.gameOver(echec);
                     this.props.sendScore(compteurTour);
                     console.log("le compteur est a " + compteurTour);
@@ -326,17 +316,19 @@ class Game extends React.Component {
                 } else {
                     this.sound.clickjaune.replayAsync()
                     this.tour = "Player";
-                    this.setState({...this.state, seconds: 10})
+                    this.setState({ seconds: this.settingsTimer})
                     clickJoueur++;
+                    this.launchTimer();
                     if (clickJoueur == sequenceIa.length) {
-                        console.log("taille du IATab dans playPlayerJaune: " + sequenceIa.length);
-                        this.setState({...this.state, turn: "IA"})
+                        //console.log("taille du IATab dans playPlayerJaune: " + sequenceIa.length);
+                        this.setState({ turn: "IA"})
                         this.tour = "IA";
                         compteurTour++;
                         //             await  sleep(1000)
                         clickJoueur = 0;
+                        console.log("stop timer second")
+                        clearInterval(this.myInterval)
                         setTimeout(() => {
-                            console.log("2,5 secondes sont passées")
                             this.playIa();
                         }, 2500);
 
@@ -345,22 +337,23 @@ class Game extends React.Component {
                 break;
             case "bleu":
                 if (couleur != sequenceIa[clickJoueur]) {
-                    this.sound.clickGameOver.replayAsync()
                     this.gameOver(echec);
                     this.props.sendScore(compteurTour);
                 } else {
                     this.sound.clickbleu.replayAsync()
-                    this.setState({...this.state, seconds: 10})
+                    this.setState({ seconds: this.settingsTimer})
                     clickJoueur++;
+                    this.launchTimer();
                     if (clickJoueur == sequenceIa.length) {
-                        console.log("taille du IATab: " + sequenceIa.length);
-                        this.setState({...this.state, turn: "IA"})
+                        //console.log("taille du IATab: " + sequenceIa.length);
+                        this.setState({ turn: "IA"})
                         compteurTour++;
                         this.tour = "IA";
                         //       await sleep(1000)
                         clickJoueur = 0;
+                        console.log("stop timer second")
+                        clearInterval(this.myInterval)
                         setTimeout(() => {
-                            console.log("2,5 secondes sont passées")
                             this.playIa();
                         }, 2500);
                     }
@@ -368,22 +361,23 @@ class Game extends React.Component {
                 break;
             case "rouge":
                 if (couleur != sequenceIa[clickJoueur]) {
-                    this.sound.clickGameOver.replayAsync()
                     this.gameOver(echec);
                     this.props.sendScore(compteurTour);
                 } else {
                     this.sound.clickrouge.replayAsync()
-                    this.setState({...this.state, seconds: 10})
+                    this.setState({ seconds: this.settingsTimer})
                     clickJoueur++;
+                    this.launchTimer();
                     if (clickJoueur == sequenceIa.length) {
-                        console.log("taille du IATab: " + sequenceIa.length);
-                        this.setState({...this.state, turn: "IA"})
+                        //console.log("taille du IATab: " + sequenceIa.length);
+                        this.setState({ turn: "IA"})
                         compteurTour++;
                         this.tour = "IA";
                         //  await sleep(1000)
                         clickJoueur = 0;
+                        console.log("stop timer second")
+                        clearInterval(this.myInterval)
                         setTimeout(() => {
-                            console.log("2,5 secondes sont passées")
                             this.playIa();
                         }, 2500);
                     }
@@ -391,22 +385,23 @@ class Game extends React.Component {
                 break;
             case "vert":
                 if (couleur != sequenceIa[clickJoueur]) {
-                    this.sound.clickGameOver.replayAsync()
                     this.gameOver(echec);
                     this.props.sendScore(compteurTour);
                 } else {
                     this.sound.clickvert.replayAsync()
-                    this.setState({...this.state, seconds: 10})
+                    this.setState({ seconds: this.settingsTimer})
                     clickJoueur++;
+                    this.launchTimer();
                     if (clickJoueur == sequenceIa.length) {
-                        console.log("taille du IATab: " + sequenceIa.length);
-                        this.setState({...this.state, turn: "IA"})
+                        //console.log("taille du IATab: " + sequenceIa.length);
+                        this.setState({ turn: "IA"})
                         compteurTour++;
                         this.tour = "IA";
                         //     await sleep(1000)
                         clickJoueur = 0;
+                        console.log("stop timer second")
+                        clearInterval(this.myInterval)
                         setTimeout(() => {
-                            console.log("2,5 secondes sont passées")
                             this.playIa();
                         }, 2500);
                     }
@@ -418,10 +413,10 @@ class Game extends React.Component {
            this.gameOver();
         }*/
 
-        console.log("reçu : " + couleur);
+        //console.log("reçu : " + couleur);
 
-        console.log("attendu : " + sequenceIa[clickJoueur]);
-        console.log("clique joueur : " + clickJoueur);
+//        console.log("attendu : " + sequenceIa[clickJoueur]);
+  //      console.log("clique joueur : " + clickJoueur);
 
 
         // console.log("tableau joueur avant pop " +sequenceIa);
@@ -443,20 +438,13 @@ class Game extends React.Component {
         /*    if (this.tour == "Player"){ // affichage du contenu suivant si le state est similaire
                 tourJoueur = <Text style={styles.ATonTour}>A ton tour ! </Text>
             }*/
-console.log("GameOverrender  = " + this.state.gameOver);
-        if (this.GameOver == true) {
+        if (this.state.gameOver == true) {
             gameOver = <Text>Tu as perdu</Text>
         }
 
-
         if (this.state.timeLeft == true) {
             timeLeft = <Text>Le temps est écoulé, tu as perdu !</Text>
-       }
-
- //       if (this.state.resetAllStates == true) {
-   //         timeLeft = <Text></Text>
-  //          gameOver = <Text></Text>
-   //     }
+        }
 
         return (
             // (TouchableOpacity car une view est incompatible avec un onPress)

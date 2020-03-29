@@ -23,7 +23,7 @@ console.log(score);
                             )
                         }
                     )}
-                    <Text> Score intermediaire :  </Text>
+                    <Text> Score normal :  </Text>
                     {score.Intermediaire.map((score,index)=>{
                         return(
                         <Text key={index}>{score[0]}:{score[1]}</Text>

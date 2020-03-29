@@ -52,31 +52,31 @@ class Config extends React.Component {
 					<Text>Configuration :</Text>
 					<TextInput
 						style={styles.input}
-			        	placeholder='Pseudo'
-			        	maxLength={20}
-			        	value={profil.pseudo}
-			        	onChangeText={(pseudo) => this._onChangePseudo(pseudo)}
-		        	/>
-                        <View>
-                        <Text>niveau:{this.props.profil.niveau}</Text>
-                         <TouchableOpacity activeOpacity={0.6} style={styles.BoutonJouer} onPress= {(niveau) =>this.getLevel("Facile")}>
+						placeholder='Pseudo'
+						maxLength={20}
+						value={profil.pseudo}
+						onChangeText={(pseudo) => this._onChangePseudo(pseudo)}
+					/>
+					<View>
+						<Text>niveau:{this.props.profil.niveau}</Text>
+						<TouchableOpacity activeOpacity={0.6} style={styles.BoutonJouer} onPress={(niveau) => this.getLevel("Facile")}>
 
-                          <Text style={styles.textBouton}>Facile</Text>
-                           </TouchableOpacity>
-                            </View>
-                            <View>
-                            <TouchableOpacity activeOpacity={0.6} style={styles.BoutonJouer} onPress= {(niveau) =>this.getLevel("Intermediaire")}>
-                            <Text style={styles.textBouton}>Intermédiaire</Text>
-                            </TouchableOpacity>
-                            </View>
-                            <View>
-                                            <TouchableOpacity activeOpacity={0.6} style={styles.BoutonJouer} onPress= {(niveau) =>this.getLevel("Difficile")}>
+							<Text style={styles.textBouton}>Facile</Text>
+						</TouchableOpacity>
+					</View>
+					<View>
+						<TouchableOpacity activeOpacity={0.6} style={styles.BoutonJouer} onPress={(niveau) => this.getLevel("Intermediaire")}>
+							<Text style={styles.textBouton}>Intermediaire</Text>
+						</TouchableOpacity>
+					</View>
+					<View>
+						<TouchableOpacity activeOpacity={0.6} style={styles.BoutonJouer} onPress={(niveau) => this.getLevel("Difficile")}>
 
-                                                                                     <Text style={styles.textBouton}>Difficile</Text>
-                                                                                 </TouchableOpacity>
-                                                                                </View>
+							<Text style={styles.textBouton}>Difficile</Text>
+						</TouchableOpacity>
+					</View>
 
-		        	<TouchableOpacity style={styles.button} onPress={() => this._onPress()}>
+					<TouchableOpacity style={styles.button} onPress={() => this._onPress()}>
 						<Text style={styles.buttonText}>Sauvegarder</Text>
 					</TouchableOpacity>
 
