@@ -31,14 +31,6 @@ const sleep = (milliseconds) => {
 
 class Game extends React.Component {
 
-    // PROBLEMES EN COURS ==>
-    // Un clearInterval est utilisé pour freezer le timer quand on perd MAIS pas moyen de le reseter quand on rejoue
-    // Pas moyen du coup également d'utiliser deux setState dans le même bloc (soit l'un soit l'autre mais pas les deux)
-    // Du coup les lignes 98/99 ne fonctionnent pas pour enlever tous les messages lorsque l'on rejoue
-
-    // Ivann: J'ai créé un seule fonction gameOver lorsqu'on perd ou que le temps est écoulé : je lui passe juste deux paramères différents (voir les variables temps et échec)
-
-
     constructor(props) {
         super(props);
         this.tour = "IA";
@@ -151,19 +143,6 @@ class Game extends React.Component {
         } catch (error) {
             console.log('errorSound', error);
         }
-/*
-        this.myInterval = setInterval(() => {
-            const {seconds} = this.state;
-            if (seconds > 0) {
-                this.setState(({seconds}) => ({
-                    seconds: seconds - 1
-                }))
-            }
-            if (seconds === 0) {
-                this.gameOver(temps);
-            }
-        }, 1000)
-  */
     };
 
     launchTimer() {
@@ -211,6 +190,7 @@ class Game extends React.Component {
         if (i + 1 >= sequenceIa.length) {
             setTimeout(() => {
                 this.setState({ tourDuJoueur: "Player"});
+                this.sound.clickJouer.replayAsync();
             }, this.wait2Seconds);
             this.currentAiIndex = 0;
             console.log("tour du joueur")
