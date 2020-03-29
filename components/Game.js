@@ -44,7 +44,8 @@ class Game extends React.Component {
         this.tour = "IA";
         this.currentAiIndex = 0;
         this.settingsTimer;
-        this.timeBetweenNote = 750;
+        this.wait2Seconds = 2000;
+        this.timeBetweenNote = 0;
         this.state = {
             seconds: null,
             gameOver: false,
@@ -76,16 +77,17 @@ class Game extends React.Component {
 
             case "Facile" :
                 this.settingsTimer = 10;
-
+                this.timeBetweenNote = 5000;
                 break;
 
             case "Intermediaire" :
                 this.settingsTimer = 5;
-
+                this.timeBetweenNote = 3000;
                 break;
 
             case "Difficile" :
                 this.settingsTimer = 3;
+                this.timeBetweenNote = 1000;
                 break;
 
         }
@@ -224,7 +226,9 @@ class Game extends React.Component {
       //  this.setState({ seconds: 10})
         //console.log("sequenIA length", sequenceIa.length);
         if (i + 1 >= sequenceIa.length) {
-            this.setState({ tourDuJoueur: "Player"})
+            setTimeout(() => {
+                this.setState({ tourDuJoueur: "Player"});
+            }, this.wait2Seconds);
             this.currentAiIndex = 0;
             console.log("tour du joueur ")
             this.settingsTimer
@@ -330,7 +334,7 @@ class Game extends React.Component {
                         clearInterval(this.myInterval)
                         setTimeout(() => {
                             this.playIa();
-                        }, 2500);
+                        }, this.wait2Seconds);
 
                     }
                 }
@@ -355,7 +359,7 @@ class Game extends React.Component {
                         clearInterval(this.myInterval)
                         setTimeout(() => {
                             this.playIa();
-                        }, 2500);
+                        }, this.wait2Seconds);
                     }
                 }
                 break;
@@ -379,7 +383,7 @@ class Game extends React.Component {
                         clearInterval(this.myInterval)
                         setTimeout(() => {
                             this.playIa();
-                        }, 2500);
+                        }, this.wait2Seconds);
                     }
                 }
                 break;
@@ -403,7 +407,7 @@ class Game extends React.Component {
                         clearInterval(this.myInterval)
                         setTimeout(() => {
                             this.playIa();
-                        }, 2500);
+                        }, this.wait2Seconds);
                     }
                 }
                 break;
