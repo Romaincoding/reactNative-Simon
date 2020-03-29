@@ -190,11 +190,11 @@ class Game extends React.Component {
         if (i + 1 >= sequenceIa.length) {
             setTimeout(() => {
                 this.setState({ tourDuJoueur: "Player"});
-                this.sound.clickJouer.replayAsync();
+                //this.sound.clickJouer.replayAsync();
             }, this.wait2Seconds);
             this.currentAiIndex = 0;
             console.log("tour du joueur")
-            this.settingsTimer
+            this.setState({ seconds: this.settingsTimer })
         } else {
             //console.log("i+1")
             this.currentAiIndex = i + 1;
@@ -384,6 +384,7 @@ class Game extends React.Component {
         const {seconds} = this.state;
         var gameOver;
         var timeLeft;
+        var timeout;
         //var tourJoueur; // variable qui va stocker et afficher le tour du joueur (via une balise <text>)
 
         /*    if (this.tour == "Player"){ // affichage du contenu suivant si le state est similaire
@@ -397,13 +398,17 @@ class Game extends React.Component {
             timeLeft = <Text>Le temps est écoulé, tu as perdu !</Text>
         }
 
+        if(seconds != null) {
+            timeout =<Text>Temps restant : {seconds}</Text> 
+        }
+
         return (
             // (TouchableOpacity car une view est incompatible avec un onPress)
             <View style={styles.ContainerTuiles}>
                 <View style={styles.TextInfos}>
                     <Text style={styles.textPartie}>Séquences retenues : {compteurTour}</Text>
                     <Text>Niveau : {profil.niveau}</Text>
-                    <Text>Temps restant : {seconds}</Text>
+                    {timeout}
                     {gameOver}
                     {timeLeft}
                 </View>
