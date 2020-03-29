@@ -185,18 +185,14 @@ class Game extends React.Component {
         this.setState({ vertIconOpacity: 1 })
         this.setState({ bleuIconOpacity: 1 })
         this.setState({ rougeIconOpacity: 1 })
-      //  this.setState({ seconds: 10})
-        //console.log("sequenIA length", sequenceIa.length);
         if (i + 1 >= sequenceIa.length) {
-            setTimeout(() => {
-                this.setState({ tourDuJoueur: "Player"});
-                this.sound.clickJouer.replayAsync();
-            }, this.wait2Seconds);
-            this.currentAiIndex = 0;
             console.log("tour du joueur")
-            this.settingsTimer
+            this.currentAiIndex = 0;
+            // On joue le son pour indiquer que c'est au joueur de jouer
+            this.sound.clickJouer.replayAsync();
+            this.setState({ seconds: '--' })
+            this.setState({ turn: 'Player' })
         } else {
-            //console.log("i+1")
             this.currentAiIndex = i + 1;
             setTimeout(() => {
                 this.boucleIAPart1()
@@ -253,6 +249,11 @@ class Game extends React.Component {
 
     // fonction activée lorsque le joueur appuie sur une tuile :
     async playPlayer(couleur) {
+
+        // On ne prend pas en compte les appuis lorsue ce n'est pas au joueur de jouer
+        if (this.state.turn != 'Player') {
+            return
+        }
 
         console.log("tour du joueur = " + compteurTour)
         //if (this.state.seconds > 0){
@@ -384,6 +385,7 @@ class Game extends React.Component {
         const {seconds} = this.state;
         var gameOver;
         var timeLeft;
+        var timeout;
         //var tourJoueur; // variable qui va stocker et afficher le tour du joueur (via une balise <text>)
 
         /*    if (this.tour == "Player"){ // affichage du contenu suivant si le state est similaire
@@ -397,13 +399,17 @@ class Game extends React.Component {
             timeLeft = <Text>Le temps est écoulé, tu as perdu !</Text>
         }
 
+        if(seconds != null) {
+            timeout =<Text>Temps restant : {seconds}</Text> 
+        }
+
         return (
             // (TouchableOpacity car une view est incompatible avec un onPress)
             <View style={styles.ContainerTuiles}>
                 <View style={styles.TextInfos}>
                     <Text style={styles.textPartie}>Séquences retenues : {compteurTour}</Text>
                     <Text>Niveau : {profil.niveau}</Text>
-                    <Text>Temps restant : {seconds}</Text>
+                    {timeout}
                     {gameOver}
                     {timeLeft}
                 </View>
@@ -413,7 +419,8 @@ class Game extends React.Component {
                         <TouchableOpacity 
                             style={styles.TuileBleu} 
                             activeOpacity={0.6}
-                            onPress={() => this.playPlayer("bleu")} />
+                            onPress={() => this.playPlayer("bleu")} 
+                        />
                     </View>
                     <View style={{ opacity: this.state.vertIconOpacity }}>
                         <TouchableOpacity 
